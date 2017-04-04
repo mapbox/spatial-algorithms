@@ -4,7 +4,8 @@ local MAPBOX_VARIANT_DIR = "deps/variant" ;
 
 lib spatial-algorithms
     :
-    src/intersects.cpp
+    src/intersects_d.cpp
+    src/intersects_i64.cpp
     :
     <link>static
     <include>include
