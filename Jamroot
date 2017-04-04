@@ -30,6 +30,17 @@ exe test-spatial-algorithms
     ;
 
 
+exe hello-spatial-algorithms
+     :
+     examples/hello-spatial-algorithms.cpp
+     .//spatial-algorithms
+     :
+     <include>include
+     <include>$(BOOST_DIR)/include
+     <include>$(MAPBOX_GEOMETRY_DIR)/include
+     <include>$(MAPBOX_VARIANT_DIR)/include
+     ;
+
 unit-test predicate_test
      :
      test/predicates-test.cpp
