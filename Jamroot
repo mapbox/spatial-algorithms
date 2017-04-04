@@ -6,6 +6,9 @@ lib spatial-algorithms
     :
     src/intersects_d.cpp
     src/intersects_i64.cpp
+    src/disjoint_d.cpp
+    src/disjoint_i64.cpp
+
     :
     <link>static
     <include>include
@@ -31,6 +34,7 @@ unit-test predicate_test
      :
      test/predicates-test.cpp
      test/predicates/test-intersects.cpp
+     test/predicates/test-disjoint.cpp
      .//spatial-algorithms
      :
      <include>include

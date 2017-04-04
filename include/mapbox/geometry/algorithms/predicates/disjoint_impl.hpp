@@ -2,8 +2,8 @@
 #include <mapbox/geometry.hpp>
 #include <mapbox/geometry/algorithms/detail/boost_adapters.hpp>
 #include <mapbox/geometry/algorithms/detail/predicate_dispatcher.hpp>
-#include <mapbox/geometry/algorithms/predicates/intersects.hpp>
-#include <boost/geometry/algorithms/intersects.hpp>
+#include <mapbox/geometry/algorithms/predicates/disjoint.hpp>
+#include <boost/geometry/algorithms/disjoint.hpp>
 
 namespace mapbox { namespace geometry { namespace algorithms {
 
@@ -35,7 +35,7 @@ struct is_implemented<mapbox::geometry::multi_point<CoordinateType>>
 
 
 template <bool implemented = false>
-struct intersects
+struct disjoint
 {
     template <typename Geometry1, typename Geometry2>
     static bool apply(Geometry1 const& g1, Geometry2 const& g2)
@@ -45,14 +45,14 @@ struct intersects
 };
 
 template <>
-struct intersects<true>
+struct disjoint<true>
 {
     template <typename CoordinateType, typename Geometry2>
     static bool apply(mapbox::geometry::multi_point<CoordinateType> const& mp, Geometry2 const& g2)
     {
         for (auto const& p : mp)
         {
-            if (boost::geometry::intersects(p, g2)) return true;
+            if (boost::geometry::disjoint(p, g2)) return true;
         }
         return false;
     }
@@ -62,7 +62,7 @@ struct intersects<true>
     {
         for (auto const& p : mp)
         {
-            if (boost::geometry::intersects(g1, p)) return true;
+            if (boost::geometry::disjoint(g1, p)) return true;
         }
         return false;
     }
@@ -75,7 +75,7 @@ struct intersects<true>
         {
             for (auto const& p2 : mp2)
             {
-                if (boost::geometry::intersects(p1, p2)) return true;
+                if (boost::geometry::disjoint(p1, p2)) return true;
             }
         }
         return false;
@@ -84,15 +84,15 @@ struct intersects<true>
     template <typename Geometry1, typename Geometry2>
     static bool apply(Geometry1 const& g1, Geometry2 const& g2)
     {
-        return boost::geometry::intersects(g1, g2);
+        return boost::geometry::disjoint(g1, g2);
     }
 };
 }
 
 template <typename Geometry1, typename Geometry2>
-bool intersects(Geometry1 const& g1, Geometry2 const& g2)
+bool disjoint(Geometry1 const& g1, Geometry2 const& g2)
 {
-    return detail::dispatcher<detail::intersects, Geometry1,Geometry2>::apply(g1, g2);
+    return detail::dispatcher<detail::disjoint, Geometry1,Geometry2>::apply(g1, g2);
 }
 
 }}}
