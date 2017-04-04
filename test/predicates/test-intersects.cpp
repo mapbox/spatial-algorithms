@@ -16,27 +16,40 @@ void test_intersects()
     {
         point<T> p1{100,200};
         point<T> p2{100,200};
-        BOOST_CHECK(op::intersects(p1, p2));
-        BOOST_CHECK(op::intersects(p2, p1));
         geometry<T> g1 = p1;
         geometry<T> g2 = p2;
+        // p1
+        BOOST_CHECK(op::intersects(p1, p2));
+        BOOST_CHECK(op::intersects(p1, g2));
+        // g1
+        BOOST_CHECK(op::intersects(g1, p2));
         BOOST_CHECK(op::intersects(g1, g2));
-        BOOST_CHECK(op::intersects(g2, g1));
+        // p2
+        BOOST_CHECK(op::intersects(p2, p1));
+        BOOST_CHECK(op::intersects(p2, g1));
     }
 
     // Point/LineString
     {
         point<T> p1{150,150};
         line_string<T> l2{ {100,100}, {200,200}};
-        BOOST_CHECK(op::intersects(p1, l2));
-        BOOST_CHECK(op::intersects(l2, p1));
         geometry<T> g1 = p1;
         geometry<T> g2 = l2;
+        // p1
+        BOOST_CHECK(op::intersects(p1, l2));
+        BOOST_CHECK(op::intersects(p1, g2));
+        // g1
+        BOOST_CHECK(op::intersects(g1, l2));
         BOOST_CHECK(op::intersects(g1, g2));
+        // l2
+        BOOST_CHECK(op::intersects(l2, p1));
+        BOOST_CHECK(op::intersects(l2, g1));
+        // g2
+        BOOST_CHECK(op::intersects(g2, l2));
         BOOST_CHECK(op::intersects(g2, g1));
     }
 
-    // TODO: add missing permutations
+    // TODO: add missing permutations !!!!!
 
     // LineString/Polygon
     {
