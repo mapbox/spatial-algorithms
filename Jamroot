@@ -25,3 +25,16 @@ exe test-spatial-algorithms
     <include>$(MAPBOX_GEOMETRY_DIR)/include
     <include>$(MAPBOX_VARIANT_DIR)/include
     ;
+
+
+unit-test predicate_test
+     :
+     test/predicates-test.cpp
+     test/predicates/test-intersects.cpp
+     .//spatial-algorithms
+     :
+     <include>include
+     <include>$(BOOST_DIR)/include
+     <include>$(MAPBOX_GEOMETRY_DIR)/include
+     <include>$(MAPBOX_VARIANT_DIR)/include
+     ;
