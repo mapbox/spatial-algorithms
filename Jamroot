@@ -1,0 +1,26 @@
+local BOOST_DIR = "/opt/boost_1_63" ;
+local MAPBOX_GEOMETRY_DIR = "deps/geometry.hpp" ;
+local MAPBOX_VARIANT_DIR = "deps/variant" ;
+
+lib spatial-algorithms
+    :
+    src/intersects.cpp
+    :
+    <link>static
+    <include>include
+    <include>$(BOOST_DIR)/include
+    <include>$(MAPBOX_GEOMETRY_DIR)/include
+    <include>$(MAPBOX_VARIANT_DIR)/include
+    ;
+
+
+exe test-spatial-algorithms
+    :
+    test/test-spatial-algorithms.cpp
+    .//spatial-algorithms
+    :
+    <include>include
+    <include>$(BOOST_DIR)/include
+    <include>$(MAPBOX_GEOMETRY_DIR)/include
+    <include>$(MAPBOX_VARIANT_DIR)/include
+    ;

@@ -1,0 +1,6 @@
+[submodule "deps/geometry.hpp"]
+	path = deps/geometry.hpp
+	url = https://github.com/mapbox/geometry.hpp.git
+[submodule "deps/variant"]
+	path = deps/variant
+	url = https://github.com/mapbox/variant.git
