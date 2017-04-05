@@ -52,9 +52,9 @@ struct disjoint<true>
     {
         for (auto const& p : mp)
         {
-            if (boost::geometry::disjoint(p, g2)) return true;
+            if (!boost::geometry::disjoint(p, g2)) return false;
         }
-        return false;
+        return true;
     }
 
     template <typename Geometry1, typename CoordinateType>
@@ -62,9 +62,9 @@ struct disjoint<true>
     {
         for (auto const& p : mp)
         {
-            if (boost::geometry::disjoint(g1, p)) return true;
+            if (!boost::geometry::disjoint(g1, p)) return false;
         }
-        return false;
+        return true;
     }
 
     template <typename CoordinateType>
@@ -75,10 +75,11 @@ struct disjoint<true>
         {
             for (auto const& p2 : mp2)
             {
-                if (boost::geometry::disjoint(p1, p2)) return true;
+                if (!boost::geometry::disjoint(p1, p2))
+                    return false;
             }
         }
-        return false;
+        return true;
     }
 
     template <typename Geometry1, typename Geometry2>

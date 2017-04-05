@@ -69,8 +69,12 @@ void test_disjoint()
 
     // MultiPoint/Point
     {
-        geometry<T> g1 = multi_point<T>{{100,100}, { 200,100}, {300, 100}};
-        geometry<T> g2 = point<T>{200,100};
+        auto mp = multi_point<T>{{100,100}, { 200,100}, {300, 100}};
+        auto p =  point<T>{201,100};
+        geometry<T> g1 = mp;
+        geometry<T> g2 = p;
+        BOOST_CHECK(op::disjoint(mp, p));
+        BOOST_CHECK(op::disjoint(p, mp));
         BOOST_CHECK(op::disjoint(g1, g2));
         BOOST_CHECK(op::disjoint(g2, g1));
     }
