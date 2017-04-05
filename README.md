@@ -18,7 +18,7 @@ int main ()
     std::cerr <<  "Intersects? " << algorithms::intersects(line, poly) << std::endl;
     std::cerr <<  "Disjoint? " << algorithms::disjoint(line, poly) << std::endl;
 
-    // yes, it works with variant based `mapbox::geometry::geometry<T>` and all permutations also.
+    // It should work with variant based `mapbox::geometry::geometry<T>` and all permutations also.
 
     geometry<double> g = line;
 
