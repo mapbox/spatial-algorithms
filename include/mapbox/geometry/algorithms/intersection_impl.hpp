@@ -9,11 +9,12 @@ template <typename Geometry1, typename Geometry2>
 auto intersection(Geometry1 const& g1, Geometry2 const& g2)
     ->typename std::vector<typename detail::intersection_value_type<Geometry1, Geometry2>::type>
 {
-    using value_type = typename detail::intersection_value_type<Geometry1, Geometry2>::type;
-    throw std::runtime_error("FAIL");
-    return std::vector<value_type>();
+    //using value_type = typename detail::intersection_value_type<Geometry1, Geometry2>::type;
+    //return std::vector<value_type>();
+    throw std::runtime_error("Not supported");
 };
 
+// point/point
 template <typename CoordinateType>
 auto intersection(point<CoordinateType> const& p1, point<CoordinateType> const& p2)
     ->std::vector<point<CoordinateType>>
@@ -23,6 +24,7 @@ auto intersection(point<CoordinateType> const& p1, point<CoordinateType> const& 
     return result;
 };
 
+// line_string/line_string
 template <typename CoordinateType>
 auto intersection(line_string<CoordinateType> const& l1, line_string<CoordinateType> const& l2)
     ->std::vector<line_string<CoordinateType>>
@@ -32,17 +34,7 @@ auto intersection(line_string<CoordinateType> const& l1, line_string<CoordinateT
     return result;
 };
 
-/*
-template <typename CoordinateType>
-auto intersection(line_string<CoordinateType> const& l1, line_string<CoordinateType> const& l2)
-    ->std::vector<point<CoordinateType>>
-{
-    std::vector<point<CoordinateType>> result;
-    boost::geometry::intersection(l1, l2, result);
-    return result;
-};
-
-
+// polygon/polygon
 template <typename CoordinateType>
 auto intersection(polygon<CoordinateType> const& poly1, polygon<CoordinateType> const& poly2)
     ->std::vector<polygon<CoordinateType>>
@@ -51,6 +43,6 @@ auto intersection(polygon<CoordinateType> const& poly1, polygon<CoordinateType> 
     boost::geometry::intersection(poly1, poly2, result);
     return result;
 };
-*/
+
 
 }}}

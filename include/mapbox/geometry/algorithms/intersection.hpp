@@ -79,4 +79,9 @@ auto intersection(line_string<CoordinateType> const& l1, line_string<CoordinateT
     ->std::vector<line_string<CoordinateType>> ;
 
 
+template <typename CoordinateType>
+auto intersection(polygon<CoordinateType> const& poly1, polygon<CoordinateType> const& poly2)
+    ->std::vector<polygon<CoordinateType>> ;
+
+
 }}}
