@@ -1,4 +1,5 @@
-local BOOST_DIR = "/opt/boost_1_63" ;
+import modules ;
+local BOOST_DIR = [ modules.peek : BOOST_DIR ] ;
 local MAPBOX_GEOMETRY_DIR = "deps/geometry.hpp" ;
 local MAPBOX_VARIANT_DIR = "deps/variant" ;
 
@@ -35,7 +36,6 @@ exe test-spatial-algorithms
     <include>$(MAPBOX_GEOMETRY_DIR)/include
     <include>$(MAPBOX_VARIANT_DIR)/include
     ;
-
 
 exe hello-spatial-algorithms
      :
