@@ -2,7 +2,6 @@
 #include <mapbox/geometry.hpp>
 #include <mapbox/geometry/algorithms/intersection.hpp>
 #include <iostream>
-
 BOOST_AUTO_TEST_SUITE(intersection_tests)
 
 namespace testing {
@@ -26,8 +25,8 @@ void test_intersection()
         BOOST_CHECK(result.size() == 0);
     }
 
+    // LineString/LineString
     {
-        // LineString/LineString
         {
             /*  \ /
                 / \
@@ -70,68 +69,29 @@ void test_intersection()
             BOOST_CHECK(result.front().back() == p2);
         }
     }
-
-#if 0
-    // Point/LineString
+    // Polygon/Polygon
     {
-        point<T> p1{150,150};
-        line_string<T> l2{ {100,100}, {200,200}};
-        geometry<T> g1 = p1;
-        geometry<T> g2 = l2;
-        // p1
-        BOOST_CHECK(op::intersects(p1, l2));
-        BOOST_CHECK(op::intersects(p1, g2));
-        // g1
-        BOOST_CHECK(op::intersects(g1, l2));
-        BOOST_CHECK(op::intersects(g1, g2));
-        // l2
-        BOOST_CHECK(op::intersects(l2, p1));
-        BOOST_CHECK(op::intersects(l2, g1));
-        // g2
-        BOOST_CHECK(op::intersects(g2, l2));
-        BOOST_CHECK(op::intersects(g2, g1));
+        polygon<T> poly1 {{{-100,0},{100,0},{0,100},{-100,0}}};
+        polygon<T> poly2 {{{0,50},{100,150},{-100,150},{0,50}}};
+        auto result = op::intersection(poly1, poly2);
+        BOOST_CHECK(result.size() == 1);
+
+        // expected result POLYGON((-25 75,0 50,25 75,0 100,-25 75))
+        linear_ring<T> expected {{-25,75},{0,50}, {25,75},{0,100},{-25,75}};
+        for (auto const& poly : result)
+        {
+            for (auto const& ring : poly)
+            {
+                BOOST_CHECK(ring.size() == expected.size());
+                std::size_t index = 0;
+                for (auto const& p : ring)
+                {
+                    BOOST_CHECK(p.x == expected[index].x);
+                    BOOST_CHECK(p.y == expected[index++].y);
+                }
+            }
+        }
     }
-
-    // TODO: add missing permutations !!!!!
-
-    // LineString/Polygon
-    {
-        line_string<T> l1{ {25,70}, {70,30}};
-        geometry<T> g1 = l1;
-
-        linear_ring<T> exterior = {{0,0}, {100,0}, {100,100}, {0, 100}, {0,0} };
-        linear_ring<T> interior = {{25,25}, {25,75}, {75,75}, {75, 25}, {25,25} };
-        polygon<T> poly = { {exterior} , {interior} };
-
-        BOOST_CHECK(op::intersects(l1, poly));
-        BOOST_CHECK(op::intersects(poly, l1));
-        geometry<T> g2 = poly;
-        BOOST_CHECK(op::intersects(g1, g2));
-        BOOST_CHECK(op::intersects(g2, g1));
-    }
-
-    // MultiPoint/Point
-    {
-        geometry<T> g1 = multi_point<T>{{100,100}, { 200,100}, {300, 100}};
-        geometry<T> g2 = point<T>{200,100};
-        BOOST_CHECK(op::intersects(g1, g2));
-        BOOST_CHECK(op::intersects(g2, g1));
-    }
-
-    // MultiPoint/MultiPoint
-    {
-        geometry<T> g1 = multi_point<T>{{200,200}, { 100,101}, {300, 300}};
-        geometry<T> g2 = multi_point<T>{{100,100}, { 200,100}, {300, 100}};
-        BOOST_CHECK(!op::intersects(g1, g2));
-    }
-    // MultiPoint/LineString
-    {
-        geometry<T> g1 = multi_point<T>{{200,200}, { 100,101}, {300, 300}};
-        geometry<T> g2 = line_string<T>{{100,100}, { 200,100}, {300, 100}};
-        BOOST_CHECK(!op::intersects(g1, g2));
-        BOOST_CHECK(!op::intersects(g2, g1));
-    }
-#endif
 }
 }
 
