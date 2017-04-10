@@ -9,6 +9,7 @@ lib spatial-algorithms
     src/disjoint_d.cpp
     src/disjoint_i64.cpp
     src/intersection_d.cpp
+    src/intersection_i64.cpp
     :
     <link>static
     <include>include

@@ -98,7 +98,7 @@ void test_intersection()
 BOOST_AUTO_TEST_CASE(intersection)
 {
     testing::test_intersection<double>();
-    //testing::test_intersection<std::int64_t>();
+    testing::test_intersection<std::int64_t>();
 }
 
 BOOST_AUTO_TEST_SUITE_END()
