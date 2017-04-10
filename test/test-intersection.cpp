@@ -119,6 +119,37 @@ void test_intersection()
             }
         }
     }
+
+    // Box/Polygon + Polygon/Box
+    //
+    // A : POLYGON((0 0,100 0,100 100,0 100,0 0),(25 25,25 75,50 75,25 25),(35 25,60 75,75 75,75 25,35 25))
+    // BOX : POLYGON((0 40,0 60,100 60,100 40,0 40))
+    // A ∩ BOX == BOX ∩ A : POLYGON((0 60,0 40,25 40,25 60,0 60)) POLYGON((100 60,75 60,75 40,100 40,100 60)) POLYGON((42.5 60,32.5 40,42.5 40,52.5 60,42.5 60))
+    {
+         polygon<double> poly {
+             {{ {0,0}, {100,0}, {100,100}, {0, 100}, {0,0}}},
+             {{ {25,25}, {25,75}, {50,75}, {25,25} }},
+             {{ {35,25}, {60,75}, {75,75}, {75,25}, {35,25} }}
+         };
+
+         box<double> b{{0,40},{100,60}};
+
+         auto result1 = algorithms::intersection(b, poly);
+         auto result2 = algorithms::intersection(poly, b);
+         BOOST_CHECK(result1 == result2);
+         BOOST_CHECK(result1.size() == 3);
+
+         polygon<double> p0{{{0,60},{0,40},{25,40},{25,60},{0,60}}};
+         polygon<double> p1{{{100,60},{75,60},{75,40},{100,40},{100,60}}};
+         polygon<double> p2{{{42.5,60},{32.5,40},{42.5,40},{52.5,60},{42.5,60}}};
+         BOOST_CHECK(result1[0] == p0);
+         BOOST_CHECK(result1[1] == p1);
+         BOOST_CHECK(result1[2] == p2);
+         BOOST_CHECK(result2[0] == p0);
+         BOOST_CHECK(result2[1] == p1);
+         BOOST_CHECK(result2[2] == p2);
+
+    }
 }
 }
 
