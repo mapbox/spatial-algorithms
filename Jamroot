@@ -8,8 +8,14 @@ lib spatial-algorithms
     src/intersects_i64.cpp
     src/disjoint_d.cpp
     src/disjoint_i64.cpp
-    src/intersection_d.cpp
-    src/intersection_i64.cpp
+    src/intersection_p_p_d.cpp
+    src/intersection_l_l_d.cpp
+    src/intersection_pl_pl_d.cpp
+    src/intersection_g_g_d.cpp
+    src/intersection_p_p_i64.cpp
+    src/intersection_l_l_i64.cpp
+    src/intersection_pl_pl_i64.cpp
+    src/intersection_g_g_i64.cpp
     :
     <link>static
     <include>include
