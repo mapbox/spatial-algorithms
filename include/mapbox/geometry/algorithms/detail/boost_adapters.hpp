@@ -2,11 +2,13 @@
 
 // mapbox
 #include <mapbox/geometry.hpp>
+#include <mapbox/geometry/box.hpp>
 // boost.geometry
 #include <boost/geometry/geometry.hpp>
 #include <boost/geometry/geometries/register/point.hpp>
 #include <boost/geometry/geometries/register/ring.hpp>
 #include <boost/geometry/geometries/register/linestring.hpp>
+#include <boost/geometry/geometries/register/box.hpp>
 
 BOOST_GEOMETRY_REGISTER_POINT_2D(mapbox::geometry::point<double>, double, boost::geometry::cs::cartesian, x, y)
 BOOST_GEOMETRY_REGISTER_POINT_2D (mapbox::geometry::point<std::int64_t>, std::int64_t, boost::geometry::cs::cartesian, x, y)
@@ -97,6 +99,49 @@ struct interior_rings
 } // ns mapbox
 
 namespace boost { namespace geometry { namespace traits {
+
+template <typename CoordinateType>
+struct tag<mapbox::geometry::box<CoordinateType> >
+{
+    using type = box_tag;
+};
+
+template <typename CoordinateType> struct point_type<mapbox::geometry::box<CoordinateType> >
+{
+    using type = typename mapbox::geometry::point<CoordinateType>;
+};
+
+template <typename CoordinateType>
+struct indexed_access<mapbox::geometry::box<CoordinateType>, min_corner, 0>
+{
+    using ct = CoordinateType;
+    static inline ct get(mapbox::geometry::box<CoordinateType> const& b) { return b.min.x;}
+    static inline void set(mapbox::geometry::box<CoordinateType> &b, ct const& value) { b.min.x = value; }
+};
+
+template <typename CoordinateType>
+struct indexed_access<mapbox::geometry::box<CoordinateType>, min_corner, 1>
+{
+    using ct = CoordinateType;
+    static inline ct get(mapbox::geometry::box<CoordinateType> const& b) { return b.min.y;}
+    static inline void set(mapbox::geometry::box<CoordinateType> &b, ct const& value) { b.min.y = value; }
+};
+
+template <typename CoordinateType>
+struct indexed_access<mapbox::geometry::box<CoordinateType>, max_corner, 0>
+{
+    using ct = CoordinateType;
+    static inline ct get(mapbox::geometry::box<CoordinateType> const& b) { return b.max.x;}
+    static inline void set(mapbox::geometry::box<CoordinateType> &b, ct const& value) { b.max.x = value; }
+};
+
+template <typename CoordinateType>
+struct indexed_access<mapbox::geometry::box<CoordinateType>, max_corner, 1>
+{
+    using ct = CoordinateType;
+    static inline ct get(mapbox::geometry::box<CoordinateType> const& b) { return b.max.y;}
+    static inline void set(mapbox::geometry::box<CoordinateType> &b , ct const& value) { b.max.y = value; }
+};
 
 template<typename CoordinateType>
 struct tag<mapbox::geometry::polygon<CoordinateType> >
