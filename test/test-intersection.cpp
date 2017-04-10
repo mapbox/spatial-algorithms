@@ -73,21 +73,48 @@ void test_intersection()
     {
         polygon<T> poly1 {{{-100,0},{100,0},{0,100},{-100,0}}};
         polygon<T> poly2 {{{0,50},{100,150},{-100,150},{0,50}}};
-        auto result = op::intersection(poly1, poly2);
-        BOOST_CHECK(result.size() == 1);
 
-        // expected result POLYGON((-25 75,0 50,25 75,0 100,-25 75))
-        linear_ring<T> expected {{-25,75},{0,50}, {25,75},{0,100},{-25,75}};
-        for (auto const& poly : result)
+        // A ∩ B
         {
-            for (auto const& ring : poly)
+
+            auto result = op::intersection(poly1, poly2);
+            BOOST_CHECK(result.size() == 1);
+
+            // expected result POLYGON((-25 75,0 50,25 75,0 100,-25 75))
+            linear_ring<T> expected {{-25,75},{0,50}, {25,75},{0,100},{-25,75}};
+            for (auto const& poly : result)
             {
-                BOOST_CHECK(ring.size() == expected.size());
-                std::size_t index = 0;
-                for (auto const& p : ring)
+                for (auto const& ring : poly)
                 {
-                    BOOST_CHECK(p.x == expected[index].x);
-                    BOOST_CHECK(p.y == expected[index++].y);
+                    BOOST_CHECK(ring.size() == expected.size());
+                    std::size_t index = 0;
+                    for (auto const& p : ring)
+                    {
+                        BOOST_CHECK(p.x == expected[index].x);
+                        BOOST_CHECK(p.y == expected[index++].y);
+                    }
+                }
+            }
+        }
+        // intersection is commutative; thus A ∩ B = B ∩ A.
+        // B ∩ A
+        {
+            auto result = op::intersection(poly2, poly1);
+            BOOST_CHECK(result.size() == 1);
+
+            // expected result POLYGON((-25 75,0 50,25 75,0 100,-25 75))
+            linear_ring<T> expected {{-25,75},{0,50}, {25,75},{0,100},{-25,75}};
+            for (auto const& poly : result)
+            {
+                for (auto const& ring : poly)
+                {
+                    BOOST_CHECK(ring.size() == expected.size());
+                    std::size_t index = 0;
+                    for (auto const& p : ring)
+                    {
+                        BOOST_CHECK(p.x == expected[index].x);
+                        BOOST_CHECK(p.y == expected[index++].y);
+                    }
                 }
             }
         }
