@@ -1,4 +1,5 @@
 #include <mapbox/geometry.hpp>
+#include <mapbox/geometry/box.hpp>
 #include <mapbox/geometry/algorithms/detail/boost_adapters.hpp>
 #include <mapbox/geometry/algorithms/intersection.hpp>
 #include <boost/geometry/algorithms/intersection.hpp>
@@ -44,5 +45,24 @@ auto intersection(polygon<CoordinateType> const& poly1, polygon<CoordinateType> 
     return result;
 };
 
+// box/polygon
+template <typename CoordinateType>
+auto intersection(box<CoordinateType> const& b, polygon<CoordinateType> const& poly2)
+    ->std::vector<polygon<CoordinateType>>
+{
+    std::vector<polygon<CoordinateType>> result;
+    boost::geometry::intersection(poly2, b, result);
+    return result;
+};
+
+// polygon/box
+template <typename CoordinateType>
+auto intersection(polygon<CoordinateType> const& poly1, box<CoordinateType> const& b)
+    ->std::vector<polygon<CoordinateType>>
+{
+    std::vector<polygon<CoordinateType>> result;
+    boost::geometry::intersection(poly1, b, result);
+    return result;
+};
 
 }}}

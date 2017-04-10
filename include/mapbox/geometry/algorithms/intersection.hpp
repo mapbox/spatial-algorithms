@@ -83,5 +83,13 @@ template <typename CoordinateType>
 auto intersection(polygon<CoordinateType> const& poly1, polygon<CoordinateType> const& poly2)
     ->std::vector<polygon<CoordinateType>> ;
 
+template <typename CoordinateType>
+auto intersection(box<CoordinateType> const& b, polygon<CoordinateType> const& poly2)
+    ->std::vector<polygon<CoordinateType>> ;
+
+
+template <typename CoordinateType>
+auto intersection(polygon<CoordinateType> const& poly1, box<CoordinateType> const& b)
+    ->std::vector<polygon<CoordinateType>> ;
 
 }}}
