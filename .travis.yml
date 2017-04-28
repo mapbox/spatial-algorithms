@@ -100,6 +100,6 @@ before_script:
  - cmake .
 
 script:
- - make -j
+ - make -j2
  - ./test_sa
 
