@@ -91,6 +91,6 @@ before_script:
  - cmake . -DCMAKE_BUILD_TYPE=${BUILD_TYPE}
 
 script:
- - VERBOSE=1 make
+ - VERBOSE=1 make -j2
  - ./test_sa
 
