@@ -1,6 +1,21 @@
 ## Spatial algorithms library for geometry.hpp
 
 
+### Building
+
+Spatial algorithms can be built using cmake. Please make sure you have a cmake version >= 3.3.
+
+Example build and test
+
+```
+mkdir build
+cd build
+cmake ..
+make -j
+./test_sa
+```
+
+### Example Useage
 
 ```c++
 
