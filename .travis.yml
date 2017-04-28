@@ -93,6 +93,8 @@ before_install:
     export PATH=$(./scripts/mason.sh prefix binutils 2.27)/bin:${PATH}
    fi
  - which ${CXX}
+ - ./scripts/mason.sh install cmake 3.7.2
+ - export PATH=$(./scripts/mason.sh prefix cmake 3.7.2)/bin:${PATH}
 
 before_script:
  - cmake .
