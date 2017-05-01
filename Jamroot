@@ -54,10 +54,10 @@ exe hello-spatial-algorithms
 
 unit-test algorithms-test
      :
-     test/predicates-test.cpp
-     test/predicates/test-intersects.cpp
-     test/predicates/test-disjoint.cpp
-     test/test-intersection.cpp
+     test/unit/main-test.cpp
+     test/unit/predicates/test-intersects.cpp
+     test/unit/predicates/test-disjoint.cpp
+     test/unit/intersection/test-intersection.cpp
      .//spatial-algorithms
      :
      <include>include
