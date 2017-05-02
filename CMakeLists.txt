@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.1)
 project(spatialalgorithms LANGUAGES CXX C)
 set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD_REQUIRED on)
 
 include(cmake/spatialalgorithms.cmake)
 include(cmake/mason.cmake)
@@ -19,6 +20,13 @@ target_include_directories(spatialalgorithms SYSTEM PRIVATE ${MASON_PACKAGE_boos
 target_include_directories(spatialalgorithms SYSTEM PUBLIC ${MASON_PACKAGE_geometry_INCLUDE_DIRS})
 target_include_directories(spatialalgorithms SYSTEM PRIVATE ${MASON_PACKAGE_wagyu_INCLUDE_DIRS})
 target_include_directories(spatialalgorithms SYSTEM PUBLIC ${MASON_PACKAGE_variant_INCLUDE_DIRS})
+
+add_executable(hello-spatial-algorithms examples/hello-spatial-algorithms.cpp)
+target_include_directories(hello-spatial-algorithms SYSTEM PRIVATE ${MASON_PACKAGE_boost_INCLUDE_DIRS})
+target_include_directories(hello-spatial-algorithms SYSTEM PUBLIC ${MASON_PACKAGE_geometry_INCLUDE_DIRS})
+target_include_directories(hello-spatial-algorithms SYSTEM PRIVATE ${MASON_PACKAGE_wagyu_INCLUDE_DIRS})
+target_include_directories(hello-spatial-algorithms SYSTEM PUBLIC ${MASON_PACKAGE_variant_INCLUDE_DIRS})
+target_link_libraries(hello-spatial-algorithms spatialalgorithms)
 
 file(GLOB_RECURSE Test_Sources test/unit test/unit/*.cpp)
 add_executable(test_sa ${Test_Sources})
