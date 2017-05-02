@@ -3,6 +3,8 @@ project(spatialalgorithms LANGUAGES CXX C)
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED on)
 
+option(BUILD_EXAMPLES "Build examples ON/OFF(default)" OFF)
+
 include(cmake/spatialalgorithms.cmake)
 include(cmake/mason.cmake)
 
@@ -15,18 +17,20 @@ include_directories("${PROJECT_SOURCE_DIR}/include")
 
 file(GLOB_RECURSE Sources src src/*.cpp)
 
-add_library(spatialalgorithms ${Sources})
+add_library(spatialalgorithms STATIC ${Sources})
 target_include_directories(spatialalgorithms SYSTEM PRIVATE ${MASON_PACKAGE_boost_INCLUDE_DIRS})
 target_include_directories(spatialalgorithms SYSTEM PUBLIC ${MASON_PACKAGE_geometry_INCLUDE_DIRS})
 target_include_directories(spatialalgorithms SYSTEM PRIVATE ${MASON_PACKAGE_wagyu_INCLUDE_DIRS})
 target_include_directories(spatialalgorithms SYSTEM PUBLIC ${MASON_PACKAGE_variant_INCLUDE_DIRS})
 
+if(BUILD_EXAMPLES)
 add_executable(hello-spatial-algorithms examples/hello-spatial-algorithms.cpp)
 target_include_directories(hello-spatial-algorithms SYSTEM PRIVATE ${MASON_PACKAGE_boost_INCLUDE_DIRS})
 target_include_directories(hello-spatial-algorithms SYSTEM PUBLIC ${MASON_PACKAGE_geometry_INCLUDE_DIRS})
 target_include_directories(hello-spatial-algorithms SYSTEM PRIVATE ${MASON_PACKAGE_wagyu_INCLUDE_DIRS})
 target_include_directories(hello-spatial-algorithms SYSTEM PUBLIC ${MASON_PACKAGE_variant_INCLUDE_DIRS})
 target_link_libraries(hello-spatial-algorithms spatialalgorithms)
+endif(BUILD_EXAMPLES)
 
 file(GLOB_RECURSE Test_Sources test/unit test/unit/*.cpp)
 add_executable(test_sa ${Test_Sources})
@@ -36,11 +40,16 @@ target_include_directories(test_sa SYSTEM PRIVATE ${MASON_PACKAGE_wagyu_INCLUDE_
 target_include_directories(test_sa SYSTEM PUBLIC ${MASON_PACKAGE_variant_INCLUDE_DIRS})
 target_link_libraries(test_sa spatialalgorithms)
 
-
 install(DIRECTORY include DESTINATION .
                   FILES_MATCHING PATTERN "*.hpp")
 
-install(TARGETS spatialalgorithms hello-spatial-algorithms
+set(install-targets)
+
+list(APPEND install-targets spatialalgorithms test_sa)
+if (BUILD_EXAMPLES)
+   list(APPEND install-targets hello-spatial-algorithms)
+endif (BUILD_EXAMPLES)
+
+install(TARGETS ${install-targets}
         RUNTIME DESTINATION bin
-        LIBRARY DESTINATION lib
         ARCHIVE DESTINATION lib)
