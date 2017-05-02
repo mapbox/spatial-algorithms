@@ -35,3 +35,12 @@ target_include_directories(test_sa SYSTEM PUBLIC ${MASON_PACKAGE_geometry_INCLUD
 target_include_directories(test_sa SYSTEM PRIVATE ${MASON_PACKAGE_wagyu_INCLUDE_DIRS})
 target_include_directories(test_sa SYSTEM PUBLIC ${MASON_PACKAGE_variant_INCLUDE_DIRS})
 target_link_libraries(test_sa spatialalgorithms)
+
+
+install(DIRECTORY include DESTINATION .
+                  FILES_MATCHING PATTERN "*.hpp")
+
+install(TARGETS spatialalgorithms hello-spatial-algorithms
+        RUNTIME DESTINATION bin
+        LIBRARY DESTINATION lib
+        ARCHIVE DESTINATION lib)
