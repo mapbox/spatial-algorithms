@@ -35,19 +35,19 @@ matrix:
       before_install:
         - which ${CXX}
     - os: linux
-      env: CXX=clang++ CXXFLAGS="-flto"
+      env: CXX=clang++ LD=clang CXXFLAGS="-flto"
       addons:
         apt:
           sources: [ 'ubuntu-toolchain-r-test' ]
           packages: [ 'libstdc++-5-dev' ]
     - os: linux
-      env: CXX=clang++ LLVM_VERSION="4.0.0" CXXFLAGS="-flto"
+      env: CXX=clang++ LD=clang LLVM_VERSION="4.0.0" CXXFLAGS="-flto"
       addons:
         apt:
           sources: [ 'ubuntu-toolchain-r-test' ]
           packages: [ 'libstdc++-5-dev' ]
     - os: linux
-      env: CXX=clang++ CXXFLAGS="-flto -fsanitize=cfi -fvisibility=hidden"
+      env: CXX=clang++ LD=clang CXXFLAGS="-flto -fsanitize=cfi -fvisibility=hidden"
       addons:
         apt:
           sources: [ 'ubuntu-toolchain-r-test' ]
@@ -59,13 +59,13 @@ matrix:
           sources: [ 'ubuntu-toolchain-r-test' ]
           packages: [ 'libstdc++-5-dev' ]
     - os: linux
-      env: CXX=clang++ CXXFLAGS="-fsanitize=undefined"
+      env: CXX=clang++ LD=clang CXXFLAGS="-fsanitize=undefined"
       addons:
         apt:
           sources: [ 'ubuntu-toolchain-r-test' ]
           packages: [ 'libstdc++-5-dev' ]
     - os: linux
-      env: CXX=clang++ CXXFLAGS="-fsanitize=integer"
+      env: CXX=clang++ LD=clang CXXFLAGS="-fsanitize=integer"
       addons:
         apt:
           sources: [ 'ubuntu-toolchain-r-test' ]
@@ -80,7 +80,7 @@ matrix:
     # OS X / mason clang 4.0.0 / xcode 8.x
     - os: osx
       osx_image: xcode8.2
-      env: CXX=clang++ LLVM_VERSION="4.0.0"
+      env: CXX=clang++ LD=clang LLVM_VERSION="4.0.0"
 
 before_install:
  - git submodule update --init
