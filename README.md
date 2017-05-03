@@ -1,5 +1,6 @@
 ## Spatial algorithms library for geometry.hpp
 
+[![Build Status](https://travis-ci.com/mapbox/spatial-algorithms.svg?token=hLpUd9oZwpjSs5JzfqFa&branch=master)](https://travis-ci.com/mapbox/spatial-algorithms)
 
 ### Building
 
