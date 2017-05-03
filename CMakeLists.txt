@@ -19,6 +19,21 @@ set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} $ENV{LINKER_FLAGS}")
 set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} $ENV{LINKER_FLAGS}")
 set(CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} $ENV{LINKER_FLAGS}")
 
+# clang LTO requires using llvm-ar and llvm-ranlib
+if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+  find_program(LLVM_AR llvm-ar)
+  find_program(LLVM_RANLIB llvm-ranlib)
+  if ("${LLVM_AR}" STREQUAL "LLVM_AR-NOTFOUND" OR "${LLVM_RANLIB}" STREQUAL "LLVM_RANLIB-NOTFOUND")
+    message(WARNING "LLVM specific binutils not found.")
+  else()
+    message(STATUS "Using LLVM specific binutils for LTO:")
+    message(STATUS " ${LLVM_AR}")
+    message(STATUS " ${LLVM_RANLIB}")
+    set(CMAKE_AR ${LLVM_AR})
+    set(CMAKE_RANLIB ${LLVM_RANLIB})
+  endif()
+endif()
+
 file(GLOB_RECURSE Sources src src/*.cpp)
 
 add_library(spatialalgorithms STATIC ${Sources})

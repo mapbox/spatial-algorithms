@@ -35,7 +35,7 @@ matrix:
       before_install:
         - which ${CXX}
     - os: linux
-      env: CXX=clang++ CXXFLAGS="-flto"
+      env: CXX=clang++ LINKER_FLAGS="-flto" CXXFLAGS="-flto"
       addons:
         apt:
           sources: [ 'ubuntu-toolchain-r-test' ]
