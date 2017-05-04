@@ -35,37 +35,25 @@ matrix:
       before_install:
         - which ${CXX}
     - os: linux
-      env: CXX=clang++ LD=clang CXXFLAGS="-flto"
+      env: CXX=clang++ LINKER_FLAGS="-flto" CXXFLAGS="-flto"
       addons:
         apt:
           sources: [ 'ubuntu-toolchain-r-test' ]
           packages: [ 'libstdc++-5-dev' ]
     - os: linux
-      env: CXX=clang++ LD=clang LLVM_VERSION="4.0.0" CXXFLAGS="-flto"
+      env: CXX=clang++ LLVM_VERSION="4.0.0"
       addons:
         apt:
           sources: [ 'ubuntu-toolchain-r-test' ]
           packages: [ 'libstdc++-5-dev' ]
     - os: linux
-      env: CXX=clang++ LD=clang CXXFLAGS="-flto -fsanitize=cfi -fvisibility=hidden"
+      env: CXX=clang++ LINKER_FLAGS="-flto" CXXFLAGS="-flto"
       addons:
         apt:
           sources: [ 'ubuntu-toolchain-r-test' ]
           packages: [ 'libstdc++-5-dev' ]
     - os: linux
-      env: CXX=clang++ CXXFLAGS="-fsanitize=address -fsanitize-address-use-after-scope -fno-omit-frame-pointer -fno-common"
-      addons:
-        apt:
-          sources: [ 'ubuntu-toolchain-r-test' ]
-          packages: [ 'libstdc++-5-dev' ]
-    - os: linux
-      env: CXX=clang++ LD=clang CXXFLAGS="-fsanitize=undefined"
-      addons:
-        apt:
-          sources: [ 'ubuntu-toolchain-r-test' ]
-          packages: [ 'libstdc++-5-dev' ]
-    - os: linux
-      env: CXX=clang++ LD=clang CXXFLAGS="-fsanitize=integer"
+      env: CXX=clang++ BUILD_TYPE=Debug LINKER_FLAGS="-fsanitize=address,undefined" CXXFLAGS="-fsanitize=address,undefined -fsanitize-address-use-after-scope -fno-omit-frame-pointer -fno-common"
       addons:
         apt:
           sources: [ 'ubuntu-toolchain-r-test' ]
@@ -80,26 +68,29 @@ matrix:
     # OS X / mason clang 4.0.0 / xcode 8.x
     - os: osx
       osx_image: xcode8.2
-      env: CXX=clang++ LD=clang LLVM_VERSION="4.0.0"
+      env: CXX=clang++ LLVM_VERSION="4.0.0"
 
 before_install:
  - git submodule update --init
  - export LLVM_VERSION="${LLVM_VERSION:-3.9.1}"
+ - export BUILD_TYPE=${BUILD_TYPE:-Release}
  - |
    if [[ ${CXX} == "clang++" ]]; then
     ./scripts/mason.sh install clang++ ${LLVM_VERSION}
     export PATH=$(./scripts/mason.sh prefix clang++ ${LLVM_VERSION})/bin:${PATH}
-    ./scripts/mason.sh install binutils 2.27
-    export PATH=$(./scripts/mason.sh prefix binutils 2.27)/bin:${PATH}
+    if [[ $(uname -s) == 'Linux' ]]; then
+      ./scripts/mason.sh install binutils 2.27
+      export PATH=$(./scripts/mason.sh prefix binutils 2.27)/bin:${PATH}
+    fi
    fi
  - which ${CXX}
 
 before_script:
  - ./scripts/mason.sh install cmake 3.7.2
  - export PATH=$(./scripts/mason.sh prefix cmake 3.7.2)/bin:${PATH}
- - cmake .
+ - cmake . -DCMAKE_BUILD_TYPE=${BUILD_TYPE}
 
 script:
- - make
+ - VERBOSE=1 make
  - ./test_sa
 
