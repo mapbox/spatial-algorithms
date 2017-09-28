@@ -1,4 +1,6 @@
 import modules ;
+import testing ;
+
 local BOOST_DIR = [ modules.peek : BOOST_DIR ] ;
 local MAPBOX_GEOMETRY_DIR = "deps/geometry.hpp" ;
 local MAPBOX_VARIANT_DIR = "deps/variant" ;
