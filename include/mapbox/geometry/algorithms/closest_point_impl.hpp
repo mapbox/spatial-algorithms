@@ -20,14 +20,14 @@ struct closest_point
     {
         info_type info;
         boost::geometry::closest_point(pt_, pt, info);
-        return result_type{info.closest_point.x, info.closest_point.y, info.distance};
+        return result_type(info.closest_point.x, info.closest_point.y, info.distance);
     }
 
     result_type operator() (mapbox::geometry::line_string<coordinate_type> const& line) const
     {
         info_type info;
         boost::geometry::closest_point(pt_ ,line, info);
-        return result_type{info.closest_point.x, info.closest_point.y, info.distance};
+        return result_type(info.closest_point.x, info.closest_point.y, info.distance);
     }
 
     result_type operator() (mapbox::geometry::polygon<coordinate_type> const& poly) const
@@ -35,7 +35,7 @@ struct closest_point
         info_type info;
         if (boost::geometry::within(pt_, poly))
         {
-            return result_type { pt_.x, pt_.y, 0.0 };
+            return result_type(pt_.x, pt_.y, 0.0);
         }
         bool first = true;
         for (auto const& ring : poly)
@@ -52,7 +52,7 @@ struct closest_point
                 info = std::move(ring_info);
             }
         }
-        return result_type{info.closest_point.x, info.closest_point.y, info.distance};
+        return result_type(info.closest_point.x, info.closest_point.y, info.distance);
     }
 
     // Multi* + GeometryCollection

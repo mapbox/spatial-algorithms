@@ -6,9 +6,15 @@ template <typename T>
 struct closest_point_info
 {
     using coordinate_type = T;
-    coordinate_type x{};
-    coordinate_type y{};
-    double distance = -1.0;
+    closest_point_info()
+        : x(),y(),distance(-1) {}
+    closest_point_info(coordinate_type x_, coordinate_type y_, double distance_)
+        : x(x_),
+          y(y_),
+          distance(distance_) {}
+    coordinate_type x;
+    coordinate_type y;
+    double distance;
 };
 
 template <typename T1, typename T2>
