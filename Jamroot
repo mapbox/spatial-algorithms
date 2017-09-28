@@ -23,6 +23,8 @@ lib spatial-algorithms
     src/intersection_g_g_i64.cpp
     src/intersection_b_pl_i64.cpp
     src/intersection_pl_b_i64.cpp
+    src/closest_point_d.cpp
+    src/closest_point_i64.cpp
     :
     <link>static
     <include>include
@@ -60,6 +62,7 @@ unit-test algorithms-test
      test/unit/predicates/test-intersects.cpp
      test/unit/predicates/test-disjoint.cpp
      test/unit/intersection/test-intersection.cpp
+     test/unit/closest_point/test-closest-point.cpp
      .//spatial-algorithms
      :
      <include>include
