@@ -12,7 +12,7 @@ struct closest_point
 {
     using coordinate_type = T;
     using info_type = boost::geometry::closest_point_result<mapbox::geometry::point<coordinate_type>>;
-    using result_type = result_type<coordinate_type>;
+    using result_type = closest_point_info<coordinate_type>;
     closest_point(mapbox::geometry::point<coordinate_type> const& pt)
         : pt_(pt) {}
 
@@ -90,7 +90,7 @@ struct closest_point
 }
 
 template <typename T1, typename T2>
-auto closest_point(T1 const& geom, mapbox::geometry::point<T2> const& pt)->result_type<T2>
+auto closest_point(T1 const& geom, mapbox::geometry::point<T2> const& pt)->closest_point_info<T2>
 {
     return detail::closest_point<T2>(pt)(geom);
 }
