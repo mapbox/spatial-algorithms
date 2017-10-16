@@ -1,5 +1,6 @@
 #include <boost/test/unit_test.hpp>
-#include <mapbox/geometry.hpp>
+#include <mapbox/geometry/geometry.hpp>
+#include <mapbox/geometry/box.hpp>
 #include <mapbox/geometry/algorithms/intersection.hpp>
 #include <iostream>
 BOOST_AUTO_TEST_SUITE(intersection_tests)

@@ -1,4 +1,4 @@
-#include <mapbox/geometry.hpp>
+#include <mapbox/geometry/geometry.hpp>
 #include <mapbox/geometry/algorithms/detail/boost_adapters.hpp>
 #include <mapbox/geometry/algorithms/closest_point.hpp>
 #include <boost/geometry/extensions/algorithms/closest_point.hpp>

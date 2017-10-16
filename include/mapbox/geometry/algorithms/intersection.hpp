@@ -1,5 +1,7 @@
 #pragma once
 
+#include <mapbox/geometry/geometry.hpp>
+#include <mapbox/geometry/box.hpp>
 #include <vector>
 
 namespace mapbox { namespace geometry { namespace algorithms {

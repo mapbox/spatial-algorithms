@@ -1,5 +1,5 @@
 #include <boost/test/unit_test.hpp>
-#include <mapbox/geometry.hpp>
+#include <mapbox/geometry/geometry.hpp>
 #include <mapbox/geometry/algorithms/closest_point.hpp>
 #include <iostream>
 BOOST_AUTO_TEST_SUITE(closest_point_tests)
