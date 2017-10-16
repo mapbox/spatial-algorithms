@@ -1,5 +1,8 @@
 #pragma once
 
+#include <type_traits>
+#include <mapbox/geometry/geometry.hpp>
+
 namespace mapbox { namespace geometry { namespace algorithms { namespace detail {
 
 template <typename T>

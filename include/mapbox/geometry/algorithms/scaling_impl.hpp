@@ -1,4 +1,4 @@
-#include <mapbox/geometry.hpp>
+#include <mapbox/geometry/geometry.hpp>
 #include <mapbox/geometry/algorithms/detail/boost_adapters.hpp>
 #include <mapbox/geometry/algorithms/scaling.hpp>
 #include <boost/geometry/algorithms/transform.hpp>

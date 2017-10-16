@@ -1,7 +1,7 @@
 #pragma once
 
 // mapbox
-#include <mapbox/geometry.hpp>
+#include <mapbox/geometry/geometry.hpp>
 #include <mapbox/geometry/box.hpp>
 // boost.geometry
 #include <boost/geometry/geometry.hpp>

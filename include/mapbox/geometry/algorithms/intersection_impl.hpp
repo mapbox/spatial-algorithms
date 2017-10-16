@@ -1,4 +1,4 @@
-#include <mapbox/geometry.hpp>
+#include <mapbox/geometry/geometry.hpp>
 #include <mapbox/geometry/box.hpp>
 #include <mapbox/geometry/algorithms/detail/boost_adapters.hpp>
 #include <mapbox/geometry/algorithms/intersection.hpp>

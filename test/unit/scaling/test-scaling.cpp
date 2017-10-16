@@ -1,5 +1,5 @@
 #include <boost/test/unit_test.hpp>
-#include <mapbox/geometry.hpp>
+#include <mapbox/geometry/geometry.hpp>
 #include <mapbox/geometry/algorithms/scaling.hpp>
 #include <iostream>
 #include <cmath>

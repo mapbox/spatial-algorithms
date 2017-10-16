@@ -1,5 +1,7 @@
 #pragma once
 
+#include <mapbox/geometry/point.hpp>
+
 namespace mapbox { namespace geometry { namespace algorithms {
 
 struct closest_point_info

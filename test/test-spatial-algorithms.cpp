@@ -1,4 +1,4 @@
-#include <mapbox/geometry.hpp>
+#include <mapbox/geometry/geometry.hpp>
 #include <mapbox/geometry/algorithms/predicates.hpp>
 #include <iostream>
 

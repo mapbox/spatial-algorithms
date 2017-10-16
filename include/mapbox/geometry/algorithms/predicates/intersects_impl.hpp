@@ -1,5 +1,5 @@
 //
-#include <mapbox/geometry.hpp>
+#include <mapbox/geometry/geometry.hpp>
 #include <mapbox/geometry/algorithms/detail/boost_adapters.hpp>
 #include <mapbox/geometry/algorithms/detail/predicate_dispatcher.hpp>
 #include <mapbox/geometry/algorithms/predicates/intersects.hpp>
