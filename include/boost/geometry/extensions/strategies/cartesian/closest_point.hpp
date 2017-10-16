@@ -127,12 +127,14 @@ public :
         if (c1 < zero)
         {
             result.distance = apply_point_point(p, p1);
-            result.closest_point = p1;
+            result.closest_point.x = p1.x;
+            result.closest_point.y = p1.y;
         }
         else if(c1 > c2)
         {
             result.distance = apply_point_point(p, p2);
-            result.closest_point = p2;
+            result.closest_point.x = p2.x;
+            result.closest_point.y = p2.y;
         }
         else
         {
