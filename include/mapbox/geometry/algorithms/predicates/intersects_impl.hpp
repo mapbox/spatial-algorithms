@@ -38,7 +38,7 @@ template <bool implemented = false>
 struct intersects
 {
     template <typename Geometry1, typename Geometry2>
-    static bool apply(Geometry1 const& g1, Geometry2 const& g2)
+    static bool apply(Geometry1 const&, Geometry2 const&)
     {
         throw std::runtime_error("Not implemented!");
     }

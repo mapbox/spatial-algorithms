@@ -17,15 +17,15 @@ void test_closest_point()
         point<T> p2{3.0, 4.0};
         {
             auto result = op::closest_point(p1, p2);
-            BOOST_CHECK(result.x == 0.0);
-            BOOST_CHECK(result.y == 0.0);
-            BOOST_CHECK(result.distance == 5.0);
+            BOOST_TEST(result.x == 0.0);
+            BOOST_TEST(result.y == 0.0);
+            BOOST_TEST(result.distance == 5.0);
         }
         {
             auto result = op::closest_point(p2, p1);
-            BOOST_CHECK(result.x == 3.0);
-            BOOST_CHECK(result.y == 4.0);
-            BOOST_CHECK(result.distance == 5.0);
+            BOOST_TEST(result.x == 3.0);
+            BOOST_TEST(result.y == 4.0);
+            BOOST_TEST(result.distance == 5.0);
         }
     }
 
@@ -35,9 +35,9 @@ void test_closest_point()
         line_string<T> line {{0, 0}, {0, 100}, {100, 100}, {100, 0}};
         point<T> pt {50, 50};
         auto result = op::closest_point(line, pt);
-        BOOST_CHECK(result.x == 0.0);
-        BOOST_CHECK(result.y == 50.0);
-        BOOST_CHECK(result.distance == 50.0);
+        BOOST_TEST(result.x == 0.0);
+        BOOST_TEST(result.y == 50.0);
+        BOOST_TEST(result.distance == 50.0);
     }
 
     // Point => Polygon
@@ -48,34 +48,34 @@ void test_closest_point()
             // point inside polygon
             point<double> pt {0.5, 0.25};
             auto result = op::closest_point(poly, pt);
-            BOOST_CHECK(result.x == 0.5);
-            BOOST_CHECK(result.y == 0.25);
-            BOOST_CHECK(result.distance == 0.0);
+            BOOST_TEST(result.x == 0.5);
+            BOOST_TEST(result.y == 0.25);
+            BOOST_TEST(result.distance == 0.0);
         }
 
         {
             // point outside polygon
             point<double> pt {1.25, 0.5};
             auto result = op::closest_point(poly, pt);
-            BOOST_CHECK(result.x == 1.0);
-            BOOST_CHECK(result.y == 0.5);
-            BOOST_CHECK(result.distance == 0.25);
+            BOOST_TEST(result.x == 1.0);
+            BOOST_TEST(result.y == 0.5);
+            BOOST_TEST(result.distance == 0.25);
         }
         {
             // point outside polygon
             point<double> pt {4.0, 5.0};
             auto result = op::closest_point(poly, pt);
-            BOOST_CHECK(result.x == 1.0);
-            BOOST_CHECK(result.y == 1.0);
-            BOOST_CHECK(result.distance == 5.0);
+            BOOST_TEST(result.x == 1.0);
+            BOOST_TEST(result.y == 1.0);
+            BOOST_TEST(result.distance == 5.0);
         }
         {
             // point on polygon boundary
             point<double> pt {0, 0.4};
             auto result = op::closest_point(poly, pt);
-            BOOST_CHECK(result.x == 0.0);
-            BOOST_CHECK(result.y == 0.4);
-            BOOST_CHECK(result.distance == 0.0);
+            BOOST_TEST(result.x == 0.0);
+            BOOST_TEST(result.y == 0.4);
+            BOOST_TEST(result.distance == 0.0);
         }
     }
 }}
