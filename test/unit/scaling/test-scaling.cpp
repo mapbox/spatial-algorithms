@@ -2,6 +2,7 @@
 #include <mapbox/geometry.hpp>
 #include <mapbox/geometry/algorithms/scaling.hpp>
 #include <iostream>
+#include <cmath>
 
 BOOST_AUTO_TEST_SUITE(scaling_tests)
 
