@@ -7,7 +7,12 @@ option(BUILD_EXAMPLES "Build examples ON/OFF(default)" OFF)
 option(WERROR "Add -Werror flag to build (turns warnings into errors)" ON)
 
 # Enable extra warnings to adhere to https://github.com/mapbox/cpp/issues/37
-set(DESIRED_WARNINGS "-Wall -Wextra -Wmost -Wconversion -Wunreachable-code -Wuninitialized -pedantic-errors -Wold-style-cast -Wno-error=unused-variable -Wshadow -Wfloat-equal")
+set(DESIRED_WARNINGS "-Wall -Wextra -Wconversion -Wunreachable-code -Wuninitialized -pedantic-errors -Wold-style-cast -Wno-error=unused-variable -Wshadow -Wfloat-equal")
+if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+  set(DESIRED_WARNINGS "${DESIRED_WARNINGS} -Weffc++")
+elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+  set(DESIRED_WARNINGS "${DESIRED_WARNINGS} -Wmost")
+endif()
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${DESIRED_WARNINGS}")
 
