@@ -4,6 +4,16 @@ set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED on)
 
 option(BUILD_EXAMPLES "Build examples ON/OFF(default)" OFF)
+option(WERROR "Add -Werror flag to build (turns warnings into errors)" ON)
+
+# Enable extra warnings to adhere to https://github.com/mapbox/cpp/issues/37
+set(DESIRED_WARNINGS "-Wall -Wextra -Wmost -Wconversion -Wunreachable-code -Wuninitialized -pedantic-errors -Wold-style-cast -Wno-error=unused-variable -Wshadow -Wfloat-equal")
+
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${DESIRED_WARNINGS}")
+
+if (WERROR)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror")
+endif()
 
 include(cmake/spatialalgorithms.cmake)
 include(cmake/mason.cmake)

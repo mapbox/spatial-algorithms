@@ -16,6 +16,8 @@ make -j
 ./test_sa
 ```
 
+The `-Werror` flag is enabled by default, which turns compiler warnings into errors. You can disable like: `cmake -DWERROR=OFF ..`.
+
 ### Example Useage
 
 ```c++
