@@ -80,9 +80,9 @@ struct interior_rings
         poly_.resize(1);
     }
 
-    void resize(std::size_t size)
+    void resize(std::size_t new_size)
     {
-        poly_.resize(size + 1);
+        poly_.resize(new_size + 1);
     }
 
     std::size_t size() const
