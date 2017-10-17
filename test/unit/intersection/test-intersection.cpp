@@ -2,6 +2,8 @@
 #include <mapbox/geometry.hpp>
 #include <mapbox/geometry/algorithms/intersection.hpp>
 #include <iostream>
+#include "../util/check_equal.hpp"
+
 BOOST_AUTO_TEST_SUITE(intersection_tests)
 
 namespace testing {
@@ -90,8 +92,7 @@ void test_intersection()
                     std::size_t index = 0;
                     for (auto const& p : ring)
                     {
-                        BOOST_CHECK(p.x == expected[index].x);
-                        BOOST_CHECK(p.y == expected[index++].y);
+                        ::testing::check_equal(p, expected[index++]);
                     }
                 }
             }
@@ -112,8 +113,7 @@ void test_intersection()
                     std::size_t index = 0;
                     for (auto const& p : ring)
                     {
-                        BOOST_CHECK(p.x == expected[index].x);
-                        BOOST_CHECK(p.y == expected[index++].y);
+                        ::testing::check_equal(p, expected[index++]);
                     }
                 }
             }
