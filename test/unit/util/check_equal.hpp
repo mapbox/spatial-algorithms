@@ -1,5 +1,4 @@
-#ifndef UTIL_CHECK_EQUAL_HPP
-#define UTIL_CHECK_EQUAL_HPP
+#pragma once
 
 #include <boost/test/unit_test.hpp>
 #include <mapbox/geometry.hpp>
@@ -75,5 +74,3 @@ inline void check_equal(multi_polygon<T> const& mp1, multi_polygon<T> const& mp2
 }
 
 } // end namespace testing
-
-#endif // UTIL_CHECK_EQUAL_HPP
