@@ -38,13 +38,14 @@ namespace boost { namespace geometry
 template <typename Point>
 struct closest_point_result
 {
-    typedef Point point_type;
-    typedef typename default_distance_result<Point>::type distance_type;
+    using point_type = Point;
+    using distance_type = typename default_distance_result<Point>::type;
     distance_type distance;
     Point closest_point;
 
     inline closest_point_result()
-        : distance(distance_type())
+        : distance(distance_type()),
+          closest_point()
     {}
 };
 
@@ -99,13 +100,12 @@ public :
     {
         assert_dimension_equal<Point, PointOfSegment>();
 
-        typedef typename calculation_type<Point, PointOfSegment>::type calculation_type;
-
+        using calc_type = typename calculation_type<Point, PointOfSegment>::type;
         //// A projected point of points in Integer coordinates must be able to be
         //// represented in FP.
         typedef model::point
             <
-                calculation_type,
+                calc_type,
                 dimension<PointOfSegment>::value,
                 typename coordinate_system<PointOfSegment>::type
             > fp_point_type;
@@ -119,22 +119,22 @@ public :
         subtract_point(v, p1);
         subtract_point(w, p1);
 
-        calculation_type const zero = calculation_type();
+        calc_type const zero = calc_type();
 
-        calculation_type const c1 = dot_product(w, v);
-        calculation_type const c2 = dot_product(v, v);
+        calc_type const c1 = dot_product(w, v);
+        calc_type const c2 = dot_product(v, v);
 
         if (c1 < zero)
         {
             result.distance = apply_point_point(p, p1);
-            result.closest_point.x = p1.x;
-            result.closest_point.y = p1.y;
+            result.closest_point.x = static_cast<calc_type>(p1.x);
+            result.closest_point.y = static_cast<calc_type>(p1.y);
         }
         else if(c1 > c2)
         {
             result.distance = apply_point_point(p, p2);
-            result.closest_point.x = p2.x;
-            result.closest_point.y = p2.y;
+            result.closest_point.x = static_cast<calc_type>(p2.x);
+            result.closest_point.y = static_cast<calc_type>(p2.y);
         }
         else
         {
@@ -148,7 +148,7 @@ public :
                 return;
             }
 
-            calculation_type const b = c1 / c2;
+            calc_type const b = c1 / c2;
             geometry::convert(p1, result.closest_point);
             multiply_value(v, b);
             add_point(result.closest_point, v);

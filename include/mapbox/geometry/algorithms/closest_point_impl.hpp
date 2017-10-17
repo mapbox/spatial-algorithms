@@ -35,7 +35,7 @@ struct closest_point
         info_type info;
         if (boost::geometry::within(pt_, poly))
         {
-            return result_type(pt_.x, pt_.y, 0.0);
+            return result_type(static_cast<double>(pt_.x), static_cast<double>(pt_.y), 0.0);
         }
         bool first = true;
         for (auto const& ring : poly)
