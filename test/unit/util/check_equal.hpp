@@ -15,14 +15,14 @@ inline void check_equal(point<T> const& pt1, point<T> const& pt2) {
 
 template <>
 inline void check_equal<double>(point<double> const& pt1, point<double> const& pt2) {
-    BOOST_CHECK_CLOSE(pt1.x, pt2.x, 0.001);
-    BOOST_CHECK_CLOSE(pt1.y, pt2.y, 0.001);
+    BOOST_CHECK_CLOSE(pt1.x, pt2.x, 1e-6);
+    BOOST_CHECK_CLOSE(pt1.y, pt2.y, 1e-6);
 }
 
 template <>
 inline void check_equal<float>(point<float> const& pt1, point<float> const& pt2) {
-    BOOST_CHECK_CLOSE(pt1.x, pt2.x, 0.001);
-    BOOST_CHECK_CLOSE(pt1.y, pt2.y, 0.001);
+    BOOST_CHECK_CLOSE(pt1.x, pt2.x, 1e-6);
+    BOOST_CHECK_CLOSE(pt1.y, pt2.y, 1e-6);
 }
 
 template <typename T>
