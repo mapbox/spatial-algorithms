@@ -1,7 +1,7 @@
 #include <boost/test/unit_test.hpp>
 #include <mapbox/geometry.hpp>
 #include <mapbox/geometry/algorithms/closest_point.hpp>
-#include <iostream>
+#include <cmath>
 BOOST_AUTO_TEST_SUITE(closest_point_tests)
 
 namespace testing {
@@ -28,6 +28,16 @@ void test_closest_point_d()
         }
     }
 
+    // Point => MultiPoint
+    {
+        point<double> p{0.0, 0.0};
+        multi_point<double> mp{{-1.0,-1.0}, {1.0, 1.1}};
+        auto result = op::closest_point(mp, p);
+        BOOST_CHECK_CLOSE(result.x, -1.0, 1e-6);
+        BOOST_CHECK_CLOSE(result.y, -1.0, 1e-6);
+        BOOST_CHECK_CLOSE(result.distance, 1.41421356, 1e-6);
+    }
+
     // Point => LineString
     {
 
@@ -39,10 +49,22 @@ void test_closest_point_d()
         BOOST_CHECK_CLOSE(result.distance, 50.0, 1e-06);
     }
 
+    // Point => MultiLineString
+    {
+        multi_line_string<double> mline {
+            {{0, 0}, {0, 100}, {100, 100}, {100, 0}},
+            {{50, 0}, {100, 50}}
+        };
+        point<double> pt {50, 50};
+        auto result = op::closest_point(mline, pt);
+        BOOST_CHECK_CLOSE(result.x, 75.0, 1e-06);
+        BOOST_CHECK_CLOSE(result.y, 25.0, 1e-06);
+        BOOST_CHECK_CLOSE(result.distance, 35.3553, 1e-03);
+    }
+
     // Point => Polygon
     {
-        polygon<double> poly {{{0, 0},{1, 0},{1, 1},{0, 1}, {0, 0}}};
-
+        polygon<double> poly {{{0, 0}, {1, 0}, {1, 1}, {0, 1}, {0, 0}}};
         {
             // point inside polygon
             point<double> pt {0.5, 0.25};
@@ -77,6 +99,19 @@ void test_closest_point_d()
             BOOST_CHECK_CLOSE(result.distance, 0.0, 1e-06);
         }
     }
+
+    // Point => MultiPolygon
+    {
+        multi_polygon<double> mpoly {
+            {{{0, 0}, {1, 0}, {1, 1}, {0, 1}, {0, 0}}},
+            {{{2, 2}, {3, 2}, {3, 3}, {2, 3}, {2, 2}}}
+        };
+        point<double> pt {4.0, 5.0};
+        auto result = op::closest_point(mpoly, pt);
+        BOOST_CHECK_CLOSE(result.x, 3.0, 1e-06);
+        BOOST_CHECK_CLOSE(result.y, 3.0, 1e-06);
+        BOOST_CHECK_CLOSE(result.distance, std::sqrt(5.0), 1e-03);
+    }
 }
 
 void test_closest_point_int64()
@@ -101,6 +136,16 @@ void test_closest_point_int64()
         }
     }
 
+    // Point => MultiPoint
+    {
+        point<std::int64_t> p{0, 0};
+        multi_point<std::int64_t> mp{{-1,-1}, {1, 1}};
+        auto result = op::closest_point(mp, p);
+        BOOST_CHECK_CLOSE(result.x, -1.0, 1e-6);
+        BOOST_CHECK_CLOSE(result.y, -1.0, 1e-6);
+        BOOST_CHECK_CLOSE(result.distance, 1.41421356, 1e-6);
+    }
+
     // Point => LineString
     {
         line_string<std::int64_t> line {{0, 0}, {0, 100}, {100, 100}, {100, 0}};
@@ -109,6 +154,19 @@ void test_closest_point_int64()
         BOOST_CHECK_CLOSE(result.x, 0.0, 1e-06);
         BOOST_CHECK_CLOSE(result.y, 50.0, 1e-06);
         BOOST_CHECK_CLOSE(result.distance, 50.0, 1e-06);
+    }
+
+    // Point => MultiLineString
+    {
+        multi_line_string<std::int64_t> mline {
+            {{0, 0}, {0, 100}, {100, 100}, {100, 0}},
+            {{50, 0}, {100, 50}}
+        };
+        point<std::int64_t> pt {50, 50};
+        auto result = op::closest_point(mline, pt);
+        BOOST_CHECK_CLOSE(result.x, 75.0, 1e-06);
+        BOOST_CHECK_CLOSE(result.y, 25.0, 1e-06);
+        BOOST_CHECK_CLOSE(result.distance, 35.3553, 1e-03);
     }
 
     // Point => Polygon
@@ -148,6 +206,18 @@ void test_closest_point_int64()
             BOOST_CHECK_CLOSE(result.y, 40.0, 1e-06);
             BOOST_CHECK_CLOSE(result.distance, 0.0, 1e-06);
         }
+    }
+     // Point => MultiPolygon
+    {
+        multi_polygon<std::int64_t> mpoly {
+            {{{0, 0}, {1, 0}, {1, 1}, {0, 1}, {0, 0}}},
+            {{{2, 2}, {3, 2}, {3, 3}, {2, 3}, {2, 2}}}
+        };
+        point<std::int64_t> pt {4, 5};
+        auto result = op::closest_point(mpoly, pt);
+        BOOST_CHECK_CLOSE(result.x, 3.0, 1e-06);
+        BOOST_CHECK_CLOSE(result.y, 3.0, 1e-06);
+        BOOST_CHECK_CLOSE(result.distance, std::sqrt(5.0), 1e-03);
     }
 }
 
