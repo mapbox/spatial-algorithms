@@ -89,7 +89,6 @@ public :
     apply_point_point(Point1 const& p1, Point2 const& p2) const
     {
         Strategy point_point_strategy;
-        boost::ignore_unused_variable_warning(point_point_strategy);
         return point_point_strategy.apply(p1, p2);
     }
 
@@ -138,9 +137,6 @@ public :
         }
         else
         {
-            Strategy point_point_strategy;
-            boost::ignore_unused_variable_warning(point_point_strategy);
-
             if (geometry::math::equals(c2, zero))
             {
                 geometry::convert(p1, result.closest_point);
