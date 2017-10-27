@@ -135,15 +135,13 @@ public :
             result.closest_point.x = static_cast<calc_type>(p2.x);
             result.closest_point.y = static_cast<calc_type>(p2.y);
         }
+        else if (geometry::math::equals(c2, zero))
+        {
+            geometry::convert(p1, result.closest_point);
+            result.distance = apply_point_point(p, p1);
+        }
         else
         {
-            if (geometry::math::equals(c2, zero))
-            {
-                geometry::convert(p1, result.closest_point);
-                result.distance = apply_point_point(p, p1);
-                return;
-            }
-
             calc_type const b = c1 / c2;
             geometry::convert(p1, result.closest_point);
             multiply_value(v, b);
