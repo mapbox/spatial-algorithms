@@ -56,7 +56,7 @@ namespace strategy { namespace distance
 template
 <
     typename CalculationType = void,
-    typename Strategy = pythagoras<CalculationType>
+    typename Strategy = comparable::pythagoras<CalculationType>
 >
 struct calculate_closest_point
 {
