@@ -18,13 +18,13 @@ void test_closest_point_d()
             auto result = op::closest_point(p1, p2);
             BOOST_CHECK_CLOSE(result.x, 0.0, 1e-06);
             BOOST_CHECK_CLOSE(result.y, 0.0, 1e-06);
-            BOOST_CHECK_CLOSE(result.distance, 5.0, 1e-06);
+            BOOST_CHECK_CLOSE(result.comparable_distance, 25.0, 1e-06);
         }
         {
             auto result = op::closest_point(p2, p1);
             BOOST_CHECK_CLOSE(result.x, 3.0, 1e-06);
             BOOST_CHECK_CLOSE(result.y, 4.0, 1e-06);
-            BOOST_CHECK_CLOSE(result.distance, 5.0, 1e-06);
+            BOOST_CHECK_CLOSE(result.comparable_distance, 25.0, 1e-06);
         }
     }
 
@@ -35,7 +35,7 @@ void test_closest_point_d()
         auto result = op::closest_point(mp, p);
         BOOST_CHECK_CLOSE(result.x, -1.0, 1e-6);
         BOOST_CHECK_CLOSE(result.y, -1.0, 1e-6);
-        BOOST_CHECK_CLOSE(result.distance, 1.41421356, 1e-6);
+        BOOST_CHECK_CLOSE(result.comparable_distance, 2.0, 1e-6);
     }
 
     // Point => LineString
@@ -46,7 +46,7 @@ void test_closest_point_d()
         auto result = op::closest_point(line, pt);
         BOOST_CHECK_CLOSE(result.x, 0.0, 1e-06);
         BOOST_CHECK_CLOSE(result.y, 50.0, 1e-06);
-        BOOST_CHECK_CLOSE(result.distance, 50.0, 1e-06);
+        BOOST_CHECK_CLOSE(result.comparable_distance, 2500.0, 1e-06);
     }
 
     // Point => MultiLineString
@@ -59,7 +59,7 @@ void test_closest_point_d()
         auto result = op::closest_point(mline, pt);
         BOOST_CHECK_CLOSE(result.x, 75.0, 1e-06);
         BOOST_CHECK_CLOSE(result.y, 25.0, 1e-06);
-        BOOST_CHECK_CLOSE(result.distance, 35.3553, 1e-03);
+        BOOST_CHECK_CLOSE(result.comparable_distance, 1250, 1e-03);
     }
 
     // Point => Polygon
@@ -71,7 +71,7 @@ void test_closest_point_d()
             auto result = op::closest_point(poly, pt);
             BOOST_CHECK_CLOSE(result.x, 0.5, 1e-06);
             BOOST_CHECK_CLOSE(result.y, 0.25, 1e-06);
-            BOOST_CHECK_CLOSE(result.distance, 0.0, 1e-06);
+            BOOST_CHECK_CLOSE(result.comparable_distance, 0.0, 1e-06);
         }
 
         {
@@ -80,7 +80,7 @@ void test_closest_point_d()
             auto result = op::closest_point(poly, pt);
             BOOST_CHECK_CLOSE(result.x, 1.0, 1e-06);
             BOOST_CHECK_CLOSE(result.y, 0.5, 1e-06);
-            BOOST_CHECK_CLOSE(result.distance, 0.25, 1e-06);
+            BOOST_CHECK_CLOSE(result.comparable_distance, 0.0625, 1e-06);
         }
         {
             // point outside polygon
@@ -88,7 +88,7 @@ void test_closest_point_d()
             auto result = op::closest_point(poly, pt);
             BOOST_CHECK_CLOSE(result.x, 1.0, 1e-06);
             BOOST_CHECK_CLOSE(result.y, 1.0, 1e-06);
-            BOOST_CHECK_CLOSE(result.distance, 5.0, 1e-06);
+            BOOST_CHECK_CLOSE(result.comparable_distance, 25.0, 1e-06);
         }
         {
             // point on polygon boundary
@@ -96,7 +96,7 @@ void test_closest_point_d()
             auto result = op::closest_point(poly, pt);
             BOOST_CHECK_CLOSE(result.x, 0.0, 1e-06);
             BOOST_CHECK_CLOSE(result.y, 0.4, 1e-06);
-            BOOST_CHECK_CLOSE(result.distance, 0.0, 1e-06);
+            BOOST_CHECK_CLOSE(result.comparable_distance, 0.0, 1e-06);
         }
     }
 
@@ -110,7 +110,7 @@ void test_closest_point_d()
         auto result = op::closest_point(mpoly, pt);
         BOOST_CHECK_CLOSE(result.x, 3.0, 1e-06);
         BOOST_CHECK_CLOSE(result.y, 3.0, 1e-06);
-        BOOST_CHECK_CLOSE(result.distance, std::sqrt(5.0), 1e-03);
+        BOOST_CHECK_CLOSE(result.comparable_distance, 5.0, 1e-03);
     }
 }
 
@@ -126,13 +126,13 @@ void test_closest_point_int64()
             auto result = op::closest_point(p1, p2);
             BOOST_CHECK_CLOSE(result.x, 0.0, 1e-06);
             BOOST_CHECK_CLOSE(result.y, 0.0, 1e-06);
-            BOOST_CHECK_CLOSE(result.distance, 5.0, 1e-06);
+            BOOST_CHECK_CLOSE(result.comparable_distance, 25.0, 1e-06);
         }
         {
             auto result = op::closest_point(p2, p1);
             BOOST_CHECK_CLOSE(result.x, 3.0, 1e-0);
             BOOST_CHECK_CLOSE(result.y, 4.0, 1e-06);
-            BOOST_CHECK_CLOSE(result.distance, 5.0, 1e-06);
+            BOOST_CHECK_CLOSE(result.comparable_distance, 25.0, 1e-06);
         }
     }
 
@@ -143,7 +143,7 @@ void test_closest_point_int64()
         auto result = op::closest_point(mp, p);
         BOOST_CHECK_CLOSE(result.x, -1.0, 1e-6);
         BOOST_CHECK_CLOSE(result.y, -1.0, 1e-6);
-        BOOST_CHECK_CLOSE(result.distance, 1.41421356, 1e-6);
+        BOOST_CHECK_CLOSE(result.comparable_distance, 2.0, 1e-6);
     }
 
     // Point => LineString
@@ -153,7 +153,7 @@ void test_closest_point_int64()
         auto result = op::closest_point(line, pt);
         BOOST_CHECK_CLOSE(result.x, 0.0, 1e-06);
         BOOST_CHECK_CLOSE(result.y, 50.0, 1e-06);
-        BOOST_CHECK_CLOSE(result.distance, 50.0, 1e-06);
+        BOOST_CHECK_CLOSE(result.comparable_distance, 2500.0, 1e-06);
     }
 
     // Point => MultiLineString
@@ -166,7 +166,7 @@ void test_closest_point_int64()
         auto result = op::closest_point(mline, pt);
         BOOST_CHECK_CLOSE(result.x, 75.0, 1e-06);
         BOOST_CHECK_CLOSE(result.y, 25.0, 1e-06);
-        BOOST_CHECK_CLOSE(result.distance, 35.3553, 1e-03);
+        BOOST_CHECK_CLOSE(result.comparable_distance, 1250.0, 1e-03);
     }
 
     // Point => Polygon
@@ -179,7 +179,7 @@ void test_closest_point_int64()
             auto result = op::closest_point(poly, pt);
             BOOST_CHECK_CLOSE(result.x, 50.0, 1e-06);
             BOOST_CHECK_CLOSE(result.y, 25.0, 1e-06);
-            BOOST_CHECK_CLOSE(result.distance, 0.0, 1e-06);
+            BOOST_CHECK_CLOSE(result.comparable_distance, 0.0, 1e-06);
         }
 
         {
@@ -188,7 +188,7 @@ void test_closest_point_int64()
             auto result = op::closest_point(poly, pt);
             BOOST_CHECK_CLOSE(result.x, 100.0, 1e-06);
             BOOST_CHECK_CLOSE(result.y, 50.0, 1e-06);
-            BOOST_CHECK_CLOSE(result.distance, 25.0, 1e-06);
+            BOOST_CHECK_CLOSE(result.comparable_distance, 625.0, 1e-06);
         }
         {
             // point outside polygon
@@ -196,7 +196,7 @@ void test_closest_point_int64()
             auto result = op::closest_point(poly, pt);
             BOOST_CHECK_CLOSE(result.x, 100.0, 1e-06);
             BOOST_CHECK_CLOSE(result.y, 100.0, 1e-06);
-            BOOST_CHECK_CLOSE(result.distance, 500.0, 1e-06);
+            BOOST_CHECK_CLOSE(result.comparable_distance, 250000.0, 1e-06);
         }
         {
             // point on polygon boundary
@@ -204,7 +204,7 @@ void test_closest_point_int64()
             auto result = op::closest_point(poly, pt);
             BOOST_CHECK_CLOSE(result.x, 0.0, 1e-06);
             BOOST_CHECK_CLOSE(result.y, 40.0, 1e-06);
-            BOOST_CHECK_CLOSE(result.distance, 0.0, 1e-06);
+            BOOST_CHECK_CLOSE(result.comparable_distance, 0.0, 1e-06);
         }
     }
      // Point => MultiPolygon
@@ -217,7 +217,7 @@ void test_closest_point_int64()
         auto result = op::closest_point(mpoly, pt);
         BOOST_CHECK_CLOSE(result.x, 3.0, 1e-06);
         BOOST_CHECK_CLOSE(result.y, 3.0, 1e-06);
-        BOOST_CHECK_CLOSE(result.distance, std::sqrt(5.0), 1e-03);
+        BOOST_CHECK_CLOSE(result.comparable_distance, 5.0, 1e-03);
     }
 }
 

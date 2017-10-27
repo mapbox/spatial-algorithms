@@ -76,7 +76,7 @@ struct closest_point
             else
             {
                 auto sub_result = operator()(geom);
-                if (sub_result.distance < result.distance)
+                if (sub_result.comparable_distance < result.comparable_distance)
                 {
                     result = std::move(sub_result);
                 }
