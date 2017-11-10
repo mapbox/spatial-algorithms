@@ -1,7 +1,6 @@
 #include <boost/test/unit_test.hpp>
 #include <mapbox/geometry.hpp>
 #include <mapbox/geometry/algorithms/predicates.hpp>
-#include <iostream>
 
 BOOST_AUTO_TEST_SUITE(disjoint_tests)
 
