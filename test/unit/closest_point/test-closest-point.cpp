@@ -10,6 +10,25 @@ void test_closest_point_d()
 {
     using namespace mapbox::geometry;
     namespace op = algorithms;
+    // Point => Empty
+    {
+        empty e;
+        point<double> p1{0.0, 0.0};
+        point<double> p2{3.0, 4.0};
+        {
+            auto result = op::closest_point(e, p2);
+            BOOST_CHECK_CLOSE(result.x, 0.0, 1e-06);
+            BOOST_CHECK_CLOSE(result.y, 0.0, 1e-06);
+            BOOST_CHECK_CLOSE(result.distance, -1.0, 1e-06);
+        }
+        {
+            auto result = op::closest_point(e, p1);
+            BOOST_CHECK_CLOSE(result.x, 0.0, 1e-06);
+            BOOST_CHECK_CLOSE(result.y, 0.0, 1e-06);
+            BOOST_CHECK_CLOSE(result.distance, -1.0, 1e-06);
+        }
+    }
+
     // Point => Point
     {
         point<double> p1{0.0, 0.0};
@@ -112,12 +131,78 @@ void test_closest_point_d()
         BOOST_CHECK_CLOSE(result.y, 3.0, 1e-06);
         BOOST_CHECK_CLOSE(result.distance, std::sqrt(5.0), 1e-03);
     }
+
+    // Point => Geometry
+    {
+        multi_polygon<double> mpoly {
+            {{{0, 0}, {1, 0}, {1, 1}, {0, 1}, {0, 0}}},
+            {{{2, 2}, {3, 2}, {3, 3}, {2, 3}, {2, 2}}}
+        };
+        geometry<double> geom(std::move(mpoly));
+        point<double> pt {4.0, 5.0};
+        auto result = op::closest_point(geom, pt);
+        BOOST_CHECK_CLOSE(result.x, 3.0, 1e-06);
+        BOOST_CHECK_CLOSE(result.y, 3.0, 1e-06);
+        BOOST_CHECK_CLOSE(result.distance, std::sqrt(5.0), 1e-03);
+    }
+    
+    // Point => Geometry Collection
+    {
+        multi_polygon<double> mpoly {
+            {{{0, 0}, {1, 0}, {1, 1}, {0, 1}, {0, 0}}},
+            {{{2, 2}, {3, 2}, {3, 3}, {2, 3}, {2, 2}}}
+        };
+        geometry<double> geom1(std::move(mpoly));
+        geometry<double> geom2; // empty geometry
+        multi_point<double> mp{{-1,-1}, {1, 1}};
+        geometry<double> geom3(std::move(mp));
+        
+        geometry_collection<double> gc;
+        gc.push_back(geom1);
+        gc.push_back(geom2);
+        gc.push_back(geom3);
+
+        point<double> pt {4, 5};
+        auto result = op::closest_point(gc, pt);
+        BOOST_CHECK_CLOSE(result.x, 3.0, 1e-06);
+        BOOST_CHECK_CLOSE(result.y, 3.0, 1e-06);
+        BOOST_CHECK_CLOSE(result.distance, std::sqrt(5.0), 1e-03);
+        
+        geometry_collection<double> gc2;
+        gc2.push_back(geom2); // First is a empty geometry
+        gc2.push_back(geom1);
+        gc2.push_back(geom3);
+        
+        auto result2 = op::closest_point(gc2, pt);
+        BOOST_CHECK_CLOSE(result2.x, 3.0, 1e-06);
+        BOOST_CHECK_CLOSE(result2.y, 3.0, 1e-06);
+        BOOST_CHECK_CLOSE(result2.distance, std::sqrt(5.0), 1e-03);
+    }
 }
 
 void test_closest_point_int64()
 {
     using namespace mapbox::geometry;
     namespace op = algorithms;
+    // Point => Empty
+    {
+        empty e;
+        point<std::int64_t> p1{0, 0};
+        point<std::int64_t> p2{3, 4};
+        {
+            auto result = op::closest_point(e, p2);
+            BOOST_CHECK_CLOSE(result.x, 0.0, 1e-06);
+            BOOST_CHECK_CLOSE(result.y, 0.0, 1e-06);
+            BOOST_CHECK_CLOSE(result.distance, -1.0, 1e-06);
+        }
+        {
+            auto result = op::closest_point(e, p1);
+            BOOST_CHECK_CLOSE(result.x, 0.0, 1e-06);
+            BOOST_CHECK_CLOSE(result.y, 0.0, 1e-06);
+            BOOST_CHECK_CLOSE(result.distance, -1.0, 1e-06);
+        }
+    }
+
     // Point => Point
     {
         point<std::int64_t> p1{0, 0};
@@ -207,7 +292,7 @@ void test_closest_point_int64()
             BOOST_CHECK_CLOSE(result.distance, 0.0, 1e-06);
         }
     }
-     // Point => MultiPolygon
+    // Point => MultiPolygon
     {
         multi_polygon<std::int64_t> mpoly {
             {{{0, 0}, {1, 0}, {1, 1}, {0, 1}, {0, 0}}},
@@ -218,6 +303,53 @@ void test_closest_point_int64()
         BOOST_CHECK_CLOSE(result.x, 3.0, 1e-06);
         BOOST_CHECK_CLOSE(result.y, 3.0, 1e-06);
         BOOST_CHECK_CLOSE(result.distance, std::sqrt(5.0), 1e-03);
+    }
+    
+    // Point => Geometry
+    {
+        multi_polygon<std::int64_t> mpoly {
+            {{{0, 0}, {1, 0}, {1, 1}, {0, 1}, {0, 0}}},
+            {{{2, 2}, {3, 2}, {3, 3}, {2, 3}, {2, 2}}}
+        };
+        geometry<std::int64_t> geom(std::move(mpoly));
+        point<std::int64_t> pt {4, 5};
+        auto result = op::closest_point(geom, pt);
+        BOOST_CHECK_CLOSE(result.x, 3.0, 1e-06);
+        BOOST_CHECK_CLOSE(result.y, 3.0, 1e-06);
+        BOOST_CHECK_CLOSE(result.distance, std::sqrt(5.0), 1e-03);
+    }
+    
+    // Point => Geometry Collection
+    {
+        multi_polygon<std::int64_t> mpoly {
+            {{{0, 0}, {1, 0}, {1, 1}, {0, 1}, {0, 0}}},
+            {{{2, 2}, {3, 2}, {3, 3}, {2, 3}, {2, 2}}}
+        };
+        geometry<std::int64_t> geom1(std::move(mpoly));
+        geometry<std::int64_t> geom2; // empty geometry
+        multi_point<std::int64_t> mp{{-1,-1}, {1, 1}};
+        geometry<std::int64_t> geom3(std::move(mp));
+        
+        geometry_collection<std::int64_t> gc;
+        gc.push_back(geom1);
+        gc.push_back(geom2);
+        gc.push_back(geom3);
+
+        point<std::int64_t> pt {4, 5};
+        auto result = op::closest_point(gc, pt);
+        BOOST_CHECK_CLOSE(result.x, 3.0, 1e-06);
+        BOOST_CHECK_CLOSE(result.y, 3.0, 1e-06);
+        BOOST_CHECK_CLOSE(result.distance, std::sqrt(5.0), 1e-03);
+        
+        geometry_collection<std::int64_t> gc2;
+        gc2.push_back(geom2); // First is a empty geometry
+        gc2.push_back(geom1);
+        gc2.push_back(geom3);
+        
+        auto result2 = op::closest_point(gc2, pt);
+        BOOST_CHECK_CLOSE(result2.x, 3.0, 1e-06);
+        BOOST_CHECK_CLOSE(result2.y, 3.0, 1e-06);
+        BOOST_CHECK_CLOSE(result2.distance, std::sqrt(5.0), 1e-03);
     }
 }
 

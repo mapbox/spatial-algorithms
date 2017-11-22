@@ -17,4 +17,5 @@ struct closest_point_info
 
 template <typename T1, typename T2>
 closest_point_info closest_point(T1 const& geom, mapbox::geometry::point<T2> const& pt);
+
 }}}

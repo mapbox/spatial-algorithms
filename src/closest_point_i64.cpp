@@ -4,6 +4,7 @@
 
 namespace mapbox { namespace geometry { namespace algorithms {
 
+template closest_point_info closest_point(empty const&, point<std::int64_t> const&);
 template closest_point_info closest_point(geometry<std::int64_t> const&, point<std::int64_t> const&);
 template closest_point_info closest_point(point<std::int64_t> const&, point<std::int64_t> const&);
 template closest_point_info closest_point(line_string<std::int64_t> const&, point<std::int64_t> const&);
