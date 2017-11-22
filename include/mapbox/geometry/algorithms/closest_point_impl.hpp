@@ -72,7 +72,10 @@ struct closest_point
             {
                 first = false;
                 result = std::move(operator()(geom));
-                if (result.distance == 0.0) return result;
+                if (boost::geometry::math::equals(result.distance, 0.0))
+                {
+                    return result;
+                }
             }
             else
             {
