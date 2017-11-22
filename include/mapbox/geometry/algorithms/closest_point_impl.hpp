@@ -16,6 +16,10 @@ struct closest_point
     closest_point(mapbox::geometry::point<coordinate_type> const& pt)
         : pt_(pt) {}
 
+    result_type operator() (mapbox::geometry::empty) const {
+        return result_type();
+    }
+
     result_type operator() (mapbox::geometry::point<coordinate_type> const& pt) const
     {
         info_type info;
