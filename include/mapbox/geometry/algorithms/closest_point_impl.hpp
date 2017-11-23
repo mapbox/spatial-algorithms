@@ -16,6 +16,10 @@ struct closest_point
     closest_point(mapbox::geometry::point<coordinate_type> const& pt)
         : pt_(pt) {}
 
+    result_type operator() (mapbox::geometry::empty) const {
+        return result_type();
+    }
+
     result_type operator() (mapbox::geometry::point<coordinate_type> const& pt) const
     {
         info_type info;
@@ -70,17 +74,19 @@ struct closest_point
         {
             if (first)
             {
-                first = false;
                 result = std::move(operator()(geom));
-                if (boost::geometry::math::equals(result.distance, 0.0))
-                {
-                    return result;
+                if (!(result.distance < 0.0)) {
+                    first = false;
+                    if (boost::geometry::math::equals(result.distance, 0.0))
+                    {
+                        return result;
+                    }
                 }
             }
             else
             {
                 auto sub_result = operator()(geom);
-                if (sub_result.distance < result.distance)
+                if (sub_result.distance < result.distance && !(sub_result.distance < 0.0))
                 {
                     result = std::move(sub_result);
                 }
