@@ -35,13 +35,12 @@
 
 #include <boost/geometry/util/math.hpp>
 
-
-namespace boost { namespace geometry
-{
+namespace boost {
+namespace geometry {
 
 #ifndef DOXYGEN_NO_DETAIL
-namespace detail { namespace closest_point {
-
+namespace detail {
+namespace closest_point {
 
 template <typename Point1, typename Point2>
 struct point_point
@@ -49,8 +48,7 @@ struct point_point
     template <typename Strategy, typename Result>
     static inline void apply(Point1 const& point1, Point2 const& point2, Strategy const& strategy, Result& result)
     {
-        result.distance
-            = strategy.apply_point_point(point1, point2);
+        result.distance = strategy.apply_point_point(point1, point2);
         geometry::convert(point2, result.closest_point);
     }
 };
@@ -81,7 +79,7 @@ struct point_range
         strategy.apply(point, *prev, *it, result);
 
         // Check other segments
-        for(prev = it++; it != boost::end(range); prev = it++)
+        for (prev = it++; it != boost::end(range); prev = it++)
         {
             Result other;
             strategy.apply(point, *prev, *it, other);
@@ -92,71 +90,53 @@ struct point_range
         }
     }
 };
-
-
-
-
-}} // namespace detail::closest_point
+}
+} // namespace detail::closest_point
 #endif // DOXYGEN_NO_DETAIL
 
-
 #ifndef DOXYGEN_NO_DISPATCH
-namespace dispatch
-{
+namespace dispatch {
 
-template
-<
+template <
     typename Geometry1, typename Geometry2,
     typename Tag1 = typename tag<Geometry1>::type,
     typename Tag2 = typename tag<Geometry2>::type,
-    bool Reverse = reverse_dispatch<Geometry1, Geometry2>::type::value
->
+    bool Reverse = reverse_dispatch<Geometry1, Geometry2>::type::value>
 struct closest_point : not_implemented<Tag1, Tag2>
 {
 };
 
-
-template
-<
+template <
     typename Geometry1, typename Geometry2,
-    typename Tag1, typename Tag2
->
+    typename Tag1, typename Tag2>
 struct closest_point<Geometry1, Geometry2, Tag1, Tag2, true>
 {
     template <typename Strategy, typename Result>
     static inline void apply(Geometry1 const& geometry1, Geometry2 const& geometry2,
-                    Strategy const& strategy, Result& result)
+                             Strategy const& strategy, Result& result)
     {
         // Reversed version just calls dispatch with reversed arguments
-        closest_point
-            <
-                Geometry2, Geometry1, Tag2, Tag1, false
-            >::apply(geometry2, geometry1, strategy, result);
+        closest_point<
+            Geometry2, Geometry1, Tag2, Tag1, false>::apply(geometry2, geometry1, strategy, result);
     }
-
 };
 
+template <typename Point1, typename Point2>
+struct closest_point<
+    Point1, Point2,
+    point_tag, point_tag, false> : public detail::closest_point::point_point<Point1, Point2>
+{
+};
 
-template<typename Point1, typename Point2>
-struct closest_point
-    <
-        Point1, Point2,
-        point_tag, point_tag, false
-    > : public detail::closest_point::point_point<Point1, Point2>
-{};
-
-
-template<typename Point, typename Segment>
-struct closest_point
-    <
-        Point, Segment,
-        point_tag, segment_tag,
-        false
-    >
+template <typename Point, typename Segment>
+struct closest_point<
+    Point, Segment,
+    point_tag, segment_tag,
+    false>
 {
     template <typename Strategy, typename Result>
     static inline void apply(Point const& point, Segment const& segment,
-                    Strategy const& strategy, Result& result)
+                             Strategy const& strategy, Result& result)
     {
 
         typename point_type<Segment>::type p[2];
@@ -167,28 +147,24 @@ struct closest_point
     }
 };
 
-
 template <typename Point, typename Ring>
 struct closest_point<Point, Ring, point_tag, ring_tag, false>
     : detail::closest_point::point_range<Point, Ring>
-{};
+{
+};
 
 //
-template<typename Point, typename Linestring>
-struct closest_point
-    <
-        Point, Linestring,
-        point_tag, linestring_tag,
-        false
-    >
+template <typename Point, typename Linestring>
+struct closest_point<
+    Point, Linestring,
+    point_tag, linestring_tag,
+    false>
     : detail::closest_point::point_range<Point, Linestring>
-{};
-
+{
+};
 
 } // namespace dispatch
 #endif // DOXYGEN_NO_DISPATCH
-
-
 
 template <typename Geometry1, typename Geometry2, typename Result>
 inline void closest_point(Geometry1 const& geometry1, Geometry2 const& geometry2, Result& result)
@@ -205,15 +181,11 @@ inline void closest_point(Geometry1 const& geometry1, Geometry2 const& geometry2
 
     strategy::distance::calculate_closest_point<> info_strategy;
 
-
-    dispatch::closest_point
-            <
-                Geometry1,
-                Geometry2
-            >::apply(geometry1, geometry2, info_strategy, result);
+    dispatch::closest_point<
+        Geometry1,
+        Geometry2>::apply(geometry1, geometry2, info_strategy, result);
 }
-
-
-}} // namespace boost::geometry
+}
+} // namespace boost::geometry
 
 #endif // BOOST_GEOMETRY_ALGORITHMS_CLOSEST_POINT_HPP

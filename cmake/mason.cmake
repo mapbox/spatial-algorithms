@@ -1,56 +1,71 @@
-# Mason CMake
+string(RANDOM LENGTH 16 MASON_INVOCATION)
+
+# Directory where Mason packages are located; typically ends with mason_packages
+if (NOT MASON_PACKAGE_DIR)
+    set(MASON_PACKAGE_DIR "${CMAKE_SOURCE_DIR}/mason_packages")
+endif()
+
+# URL prefix of where packages are located.
+if (NOT MASON_REPOSITORY)
+    set(MASON_REPOSITORY "https://mason-binaries.s3.amazonaws.com")
+endif()
+
+# Path to Mason executable
+if (NOT MASON_COMMAND)
+    set(MASON_COMMAND "${CMAKE_SOURCE_DIR}/.mason/mason")
+endif()
+
+# Determine platform
+# we call uname -s manually here since
+# CMAKE_HOST_SYSTEM_NAME will not be defined before the project() call
+execute_process(
+    COMMAND uname -s
+    OUTPUT_VARIABLE UNAME_S
+    OUTPUT_STRIP_TRAILING_WHITESPACE)
+
+if(NOT MASON_PLATFORM)
+    if (UNAME_S STREQUAL "Darwin")
+        set(MASON_PLATFORM "macos")
+    else()
+        set(MASON_PLATFORM "linux")
+    endif()
+endif()
+
+
+# Determine platform version string
+if(MASON_PLATFORM STREQUAL "ios")
+    set(MASON_PLATFORM_VERSION "8.0") # Deployment target version
+elseif(MASON_PLATFORM STREQUAL "android")
+    if (ANDROID_ABI STREQUAL "armeabi")
+        set(MASON_PLATFORM_VERSION "arm-v5-9")
+    elseif(ANDROID_ABI STREQUAL "arm64-v8a")
+        set(MASON_PLATFORM_VERSION "arm-v8-21")
+    elseif(ANDROID_ABI STREQUAL "x86")
+        set(MASON_PLATFORM_VERSION "x86-9")
+    elseif(ANDROID_ABI STREQUAL "x86_64")
+        set(MASON_PLATFORM_VERSION "x86-64-21")
+    elseif(ANDROID_ABI STREQUAL "mips")
+        set(MASON_PLATFORM_VERSION "mips-9")
+    elseif(ANDROID_ABI STREQUAL "mips64")
+        set(MASON_PLATFORM_VERSION "mips64-21")
+    else()
+        set(MASON_PLATFORM_VERSION "arm-v7-9")
+    endif()
+elseif(NOT MASON_PLATFORM_VERSION)
+    execute_process(
+        COMMAND uname -m
+        OUTPUT_VARIABLE MASON_PLATFORM_VERSION
+        OUTPUT_STRIP_TRAILING_WHITESPACE)
+endif()
+
+if(MASON_PLATFORM STREQUAL "macos")
+    set(MASON_PLATFORM "osx")
+endif()
+
+set(ENV{MASON_PLATFORM} "${MASON_PLATFORM}")
+set(ENV{MASON_PLATFORM_VERSION} "${MASON_PLATFORM_VERSION}")
 
 include(CMakeParseArguments)
-
-function(mason_detect_platform)
-    # Determine platform
-    if(NOT MASON_PLATFORM)
-        # we call uname -s manually here since
-        # CMAKE_HOST_SYSTEM_NAME will not be defined before the project() call
-        execute_process(
-            COMMAND uname -s
-            OUTPUT_VARIABLE UNAME
-            OUTPUT_STRIP_TRAILING_WHITESPACE)
-
-        if (UNAME STREQUAL "Darwin")
-            set(MASON_PLATFORM "osx" PARENT_SCOPE)
-        else()
-            set(MASON_PLATFORM "linux" PARENT_SCOPE)
-        endif()
-    endif()
-
-    # Determine platform version string
-    if(NOT MASON_PLATFORM_VERSION)
-        # Android Studio only passes ANDROID_ABI, but we need to adjust that to the Mason
-        if(MASON_PLATFORM STREQUAL "android" AND NOT MASON_PLATFORM_VERSION)
-            if (ANDROID_ABI STREQUAL "armeabi")
-                set(MASON_PLATFORM_VERSION "arm-v5-9" PARENT_SCOPE)
-            elseif (ANDROID_ABI STREQUAL "armeabi-v7a")
-                set(MASON_PLATFORM_VERSION "arm-v7-9" PARENT_SCOPE)
-            elseif (ANDROID_ABI STREQUAL "arm64-v8a")
-                set(MASON_PLATFORM_VERSION "arm-v8-21" PARENT_SCOPE)
-            elseif (ANDROID_ABI STREQUAL "x86")
-                set(MASON_PLATFORM_VERSION "x86-9" PARENT_SCOPE)
-            elseif (ANDROID_ABI STREQUAL "x86_64")
-                set(MASON_PLATFORM_VERSION "x86-64-21" PARENT_SCOPE)
-            elseif (ANDROID_ABI STREQUAL "mips")
-                set(MASON_PLATFORM_VERSION "mips-9" PARENT_SCOPE)
-            elseif (ANDROID_ABI STREQUAL "mips64")
-                set(MASON_PLATFORM_VERSION "mips-64-9" PARENT_SCOPE)
-            else()
-                message(FATAL_ERROR "Unknown ANDROID_ABI '${ANDROID_ABI}'.")
-            endif()
-        elseif(MASON_PLATFORM STREQUAL "ios")
-            set(MASON_PLATFORM_VERSION "8.0" PARENT_SCOPE)
-        else()
-            execute_process(
-                COMMAND uname -m
-                OUTPUT_VARIABLE MASON_PLATFORM_VERSION
-                OUTPUT_STRIP_TRAILING_WHITESPACE)
-            set(MASON_PLATFORM_VERSION "${MASON_PLATFORM_VERSION}" PARENT_SCOPE)
-        endif()
-    endif()
-endfunction()
 
 function(mason_use _PACKAGE)
     if(NOT _PACKAGE)
@@ -88,7 +103,7 @@ function(mason_use _PACKAGE)
             if (NOT EXISTS "${_CACHE_PATH}")
                 # Download the package
                 set(_URL "${MASON_REPOSITORY}/${_SLUG}.tar.gz")
-                message("[Mason] Downloading package ${_URL}...")
+                message(STATUS "[Mason] Downloading package ${_URL}...")
 
                 set(_FAILED)
                 set(_ERROR)
@@ -108,16 +123,39 @@ function(mason_use _PACKAGE)
             endif()
 
             # Unpack the package
-            message("[Mason] Unpacking package to ${_INSTALL_PATH_RELATIVE}...")
+            message(STATUS "[Mason] Unpacking package to ${_INSTALL_PATH_RELATIVE}...")
             file(MAKE_DIRECTORY "${_INSTALL_PATH}")
             execute_process(
                 COMMAND ${CMAKE_COMMAND} -E tar xzf "${_CACHE_PATH}"
                 WORKING_DIRECTORY "${_INSTALL_PATH}")
         endif()
 
-        # Error out if there is no config file.
+        # Create a config file if it doesn't exist in the package
+        # TODO: remove this once all packages have a mason.ini file
         if(NOT EXISTS "${_INSTALL_PATH}/mason.ini")
-            message(FATAL_ERROR "[Mason] Could not find mason.ini for package ${_PACKAGE} ${_VERSION}")
+            # Change pkg-config files
+            file(GLOB_RECURSE _PKGCONFIG_FILES "${_INSTALL_PATH}/*.pc")
+            foreach(_PKGCONFIG_FILE IN ITEMS ${_PKGCONFIG_FILES})
+                file(READ "${_PKGCONFIG_FILE}" _PKGCONFIG_FILE_CONTENT)
+                string(REGEX REPLACE "(^|\n)prefix=[^\n]*" "\\1prefix=${_INSTALL_PATH}" _PKGCONFIG_FILE_CONTENT "${_PKGCONFIG_FILE_CONTENT}")
+                file(WRITE "${_PKGCONFIG_FILE}" "${_PKGCONFIG_FILE_CONTENT}")
+            endforeach()
+
+            if(NOT EXISTS "${MASON_COMMAND}")
+                message(FATAL_ERROR "[Mason] Could not find Mason command at ${MASON_COMMAND}")
+            endif()
+
+            set(_FAILED)
+            set(_ERROR)
+            execute_process(
+                COMMAND ${MASON_COMMAND} config ${_PACKAGE} ${_VERSION}
+                WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+                OUTPUT_FILE "${_INSTALL_PATH}/mason.ini"
+                RESULT_VARIABLE _FAILED
+                ERROR_VARIABLE _ERROR)
+            if(_FAILED)
+                message(FATAL_ERROR "[Mason] Could not get configuration for package ${_PACKAGE} ${_VERSION}: ${_ERROR}")
+            endif()
         endif()
 
         set(MASON_PACKAGE_${_PACKAGE}_PREFIX "${_INSTALL_PATH}" CACHE STRING "${_PACKAGE} ${_INSTALL_PATH}" FORCE)
@@ -191,45 +229,3 @@ macro(target_add_mason_package _TARGET _VISIBILITY _PACKAGE)
     target_compile_options(${_TARGET} ${_VISIBILITY} "${MASON_PACKAGE_${_PACKAGE}_OPTIONS}")
     target_link_libraries(${_TARGET} ${_VISIBILITY} "${MASON_PACKAGE_${_PACKAGE}_LIBRARIES}")
 endmacro()
-
-# Setup
-
-string(RANDOM LENGTH 16 MASON_INVOCATION)
-
-# Read environment variables if CMake is run in command mode
-if (CMAKE_ARGC)
-    set(MASON_PLATFORM "$ENV{MASON_PLATFORM}")
-    set(MASON_PLATFORM_VERSION "$ENV{MASON_PLATFORM_VERSION}")
-    set(MASON_PACKAGE_DIR "$ENV{MASON_PACKAGE_DIR}")
-    set(MASON_REPOSITORY "$ENV{MASON_REPOSITORY}")
-endif()
-
-# Directory where Mason packages are located; typically ends with mason_packages
-if (NOT MASON_PACKAGE_DIR)
-    set(MASON_PACKAGE_DIR "${CMAKE_SOURCE_DIR}/mason_packages")
-endif()
-
-# URL prefix of where packages are located.
-if (NOT MASON_REPOSITORY)
-    set(MASON_REPOSITORY "https://mason-binaries.s3.amazonaws.com")
-endif()
-
-mason_detect_platform()
-
-# Execute commands if CMake is run in command mode
-if (CMAKE_ARGC)
-    # Collect remaining arguments for passing to mason_use
-    set(_MASON_ARGS)
-    foreach(I RANGE 4 ${CMAKE_ARGC})
-        list(APPEND _MASON_ARGS "${CMAKE_ARGV${I}}")
-    endforeach()
-
-    # Install the package
-    mason_use(${_MASON_ARGS})
-
-    # Optionally print variables
-    if(DEFINED MASON_PACKAGE_${CMAKE_ARGV4}_${CMAKE_ARGV3})
-        # CMake can't write to stdout with message()
-        execute_process(COMMAND ${CMAKE_COMMAND} -E echo "${MASON_PACKAGE_${CMAKE_ARGV4}_${CMAKE_ARGV3}}")
-    endif()
-endif()
