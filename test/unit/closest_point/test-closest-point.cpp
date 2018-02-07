@@ -341,8 +341,8 @@ TEST_CASE("closest_point - int64_t")
         gc2.push_back(geom3);
 
         auto result2 = op::closest_point(gc2, pt);
-        CHECK(result.x == Approx(3.0));
-        CHECK(result.y == Approx(3.0));
-        CHECK(result.distance == Approx(std::sqrt(5.0)));
+        CHECK(result2.x == Approx(3.0));
+        CHECK(result2.y == Approx(3.0));
+        CHECK(result2.distance == Approx(std::sqrt(5.0)));
     }
 }
