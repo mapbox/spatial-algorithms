@@ -5,7 +5,9 @@
 #include <mapbox/geometry/algorithms/predicates/disjoint.hpp>
 #include <boost/geometry/algorithms/disjoint.hpp>
 
-namespace mapbox { namespace geometry { namespace algorithms {
+namespace mapbox {
+namespace geometry {
+namespace algorithms {
 
 namespace detail {
 
@@ -32,7 +34,6 @@ struct is_implemented<mapbox::geometry::multi_point<CoordinateType>>
 {
     static constexpr bool value = true;
 };
-
 
 template <bool implemented = false>
 struct disjoint
@@ -93,7 +94,8 @@ struct disjoint<true>
 template <typename Geometry1, typename Geometry2>
 bool disjoint(Geometry1 const& g1, Geometry2 const& g2)
 {
-    return detail::dispatcher<detail::disjoint, Geometry1,Geometry2>::apply(g1, g2);
+    return detail::dispatcher<detail::disjoint, Geometry1, Geometry2>::apply(g1, g2);
 }
-
-}}}
+}
+}
+}

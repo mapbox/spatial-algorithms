@@ -11,7 +11,7 @@
 #include <boost/geometry/geometries/register/box.hpp>
 
 BOOST_GEOMETRY_REGISTER_POINT_2D(mapbox::geometry::point<double>, double, boost::geometry::cs::cartesian, x, y)
-BOOST_GEOMETRY_REGISTER_POINT_2D (mapbox::geometry::point<std::int64_t>, std::int64_t, boost::geometry::cs::cartesian, x, y)
+BOOST_GEOMETRY_REGISTER_POINT_2D(mapbox::geometry::point<std::int64_t>, std::int64_t, boost::geometry::cs::cartesian, x, y)
 BOOST_GEOMETRY_REGISTER_LINESTRING_TEMPLATED(mapbox::geometry::line_string)
 BOOST_GEOMETRY_REGISTER_RING_TEMPLATED(mapbox::geometry::linear_ring)
 
@@ -35,17 +35,16 @@ struct const_interior_rings
         return itr;
     }
 
-    const_iterator end() const { return poly_.cend();}
+    const_iterator end() const { return poly_.cend(); }
 
     std::size_t size() const
     {
         return poly_.empty() ? 0 : poly_.size() - 1;
     }
 
-    value_type const& back()  const { return poly_.back(); }
+    value_type const& back() const { return poly_.back(); }
     polygon_type const& poly_;
 };
-
 
 template <typename CoordinateType>
 struct interior_rings
@@ -55,7 +54,7 @@ struct interior_rings
     using const_iterator = typename polygon_type::const_iterator;
     using value_type = typename polygon_type::value_type;
 
-    interior_rings(polygon_type & poly)
+    interior_rings(polygon_type& poly)
         : poly_(poly) {}
 
     iterator begin()
@@ -65,7 +64,7 @@ struct interior_rings
         return itr;
     }
 
-    iterator end() { return poly_.end();}
+    iterator end() { return poly_.end(); }
     const_iterator begin() const
     {
         auto itr = poly_.cbegin();
@@ -73,7 +72,7 @@ struct interior_rings
         return itr;
     }
 
-    const_iterator end() const { return poly_.cend();}
+    const_iterator end() const { return poly_.cend(); }
 
     void clear()
     {
@@ -92,21 +91,24 @@ struct interior_rings
 
     void push_back(value_type const& val) { poly_.push_back(val); }
     value_type& back() { return poly_.back(); }
-    value_type const& back()  const { return poly_.back(); }
-    polygon_type & poly_;
+    value_type const& back() const { return poly_.back(); }
+    polygon_type& poly_;
 };
 
 } // ns mapbox
 
-namespace boost { namespace geometry { namespace traits {
+namespace boost {
+namespace geometry {
+namespace traits {
 
 template <typename CoordinateType>
-struct tag<mapbox::geometry::box<CoordinateType> >
+struct tag<mapbox::geometry::box<CoordinateType>>
 {
     using type = box_tag;
 };
 
-template <typename CoordinateType> struct point_type<mapbox::geometry::box<CoordinateType> >
+template <typename CoordinateType>
+struct point_type<mapbox::geometry::box<CoordinateType>>
 {
     using type = typename mapbox::geometry::point<CoordinateType>;
 };
@@ -115,73 +117,73 @@ template <typename CoordinateType>
 struct indexed_access<mapbox::geometry::box<CoordinateType>, min_corner, 0>
 {
     using ct = CoordinateType;
-    static inline ct get(mapbox::geometry::box<CoordinateType> const& b) { return b.min.x;}
-    static inline void set(mapbox::geometry::box<CoordinateType> &b, ct const& value) { b.min.x = value; }
+    static inline ct get(mapbox::geometry::box<CoordinateType> const& b) { return b.min.x; }
+    static inline void set(mapbox::geometry::box<CoordinateType>& b, ct const& value) { b.min.x = value; }
 };
 
 template <typename CoordinateType>
 struct indexed_access<mapbox::geometry::box<CoordinateType>, min_corner, 1>
 {
     using ct = CoordinateType;
-    static inline ct get(mapbox::geometry::box<CoordinateType> const& b) { return b.min.y;}
-    static inline void set(mapbox::geometry::box<CoordinateType> &b, ct const& value) { b.min.y = value; }
+    static inline ct get(mapbox::geometry::box<CoordinateType> const& b) { return b.min.y; }
+    static inline void set(mapbox::geometry::box<CoordinateType>& b, ct const& value) { b.min.y = value; }
 };
 
 template <typename CoordinateType>
 struct indexed_access<mapbox::geometry::box<CoordinateType>, max_corner, 0>
 {
     using ct = CoordinateType;
-    static inline ct get(mapbox::geometry::box<CoordinateType> const& b) { return b.max.x;}
-    static inline void set(mapbox::geometry::box<CoordinateType> &b, ct const& value) { b.max.x = value; }
+    static inline ct get(mapbox::geometry::box<CoordinateType> const& b) { return b.max.x; }
+    static inline void set(mapbox::geometry::box<CoordinateType>& b, ct const& value) { b.max.x = value; }
 };
 
 template <typename CoordinateType>
 struct indexed_access<mapbox::geometry::box<CoordinateType>, max_corner, 1>
 {
     using ct = CoordinateType;
-    static inline ct get(mapbox::geometry::box<CoordinateType> const& b) { return b.max.y;}
-    static inline void set(mapbox::geometry::box<CoordinateType> &b , ct const& value) { b.max.y = value; }
+    static inline ct get(mapbox::geometry::box<CoordinateType> const& b) { return b.max.y; }
+    static inline void set(mapbox::geometry::box<CoordinateType>& b, ct const& value) { b.max.y = value; }
 };
 
-template<typename CoordinateType>
-struct tag<mapbox::geometry::polygon<CoordinateType> >
+template <typename CoordinateType>
+struct tag<mapbox::geometry::polygon<CoordinateType>>
 {
     using type = polygon_tag;
 };
 
 template <typename CoordinateType>
-struct point_order<mapbox::geometry::linear_ring<CoordinateType> >
+struct point_order<mapbox::geometry::linear_ring<CoordinateType>>
 {
     static const order_selector value = counterclockwise;
 };
 
-template<typename CoordinateType>
-struct tag<mapbox::geometry::multi_point<CoordinateType> >
+template <typename CoordinateType>
+struct tag<mapbox::geometry::multi_point<CoordinateType>>
 {
     using type = multi_point_tag;
 };
 
-template<typename CoordinateType>
-struct tag<mapbox::geometry::multi_line_string<CoordinateType> >
+template <typename CoordinateType>
+struct tag<mapbox::geometry::multi_line_string<CoordinateType>>
 {
     using type = multi_linestring_tag;
 };
 
-template<typename CoordinateType>
-struct tag<mapbox::geometry::multi_polygon<CoordinateType> >
+template <typename CoordinateType>
+struct tag<mapbox::geometry::multi_polygon<CoordinateType>>
 {
     using type = multi_polygon_tag;
 };
 
 // ring
 template <typename CoordinateType>
-struct ring_const_type<mapbox::geometry::polygon<CoordinateType> >
+struct ring_const_type<mapbox::geometry::polygon<CoordinateType>>
 {
     using type = typename mapbox::geometry::linear_ring<CoordinateType> const&;
 };
 
 template <typename CoordinateType>
-struct ring_mutable_type<mapbox::geometry::polygon<CoordinateType> >
+struct ring_mutable_type<mapbox::geometry::polygon<CoordinateType>>
 {
     using type = typename mapbox::geometry::linear_ring<CoordinateType>&;
 };
@@ -194,17 +196,17 @@ struct interior_const_type<mapbox::geometry::polygon<CoordinateType>>
 };
 
 template <typename CoordinateType>
-struct interior_mutable_type<mapbox::geometry::polygon<CoordinateType> >
+struct interior_mutable_type<mapbox::geometry::polygon<CoordinateType>>
 {
-    using type = typename mapbox::interior_rings<CoordinateType> ;
+    using type = typename mapbox::interior_rings<CoordinateType>;
 };
 
 template <typename CoordinateType>
-struct exterior_ring<mapbox::geometry::polygon<CoordinateType> >
+struct exterior_ring<mapbox::geometry::polygon<CoordinateType>>
 {
-    using ring_const_type   = typename ring_const_type<mapbox::geometry::polygon<CoordinateType> >::type;
-    using ring_mutable_type = typename ring_mutable_type<mapbox::geometry::polygon<CoordinateType> >::type;
-    static ring_mutable_type get(mapbox::geometry::polygon<CoordinateType> & p)
+    using ring_const_type = typename ring_const_type<mapbox::geometry::polygon<CoordinateType>>::type;
+    using ring_mutable_type = typename ring_mutable_type<mapbox::geometry::polygon<CoordinateType>>::type;
+    static ring_mutable_type get(mapbox::geometry::polygon<CoordinateType>& p)
     {
         if (p.empty()) p.resize(1);
         return p[0];
@@ -218,10 +220,10 @@ struct exterior_ring<mapbox::geometry::polygon<CoordinateType> >
 };
 
 template <typename CoordinateType>
-struct interior_rings<mapbox::geometry::polygon<CoordinateType> >
+struct interior_rings<mapbox::geometry::polygon<CoordinateType>>
 {
-    using interior_const_type = typename interior_const_type<mapbox::geometry::polygon<CoordinateType> >::type;
-    using interior_mutable_type = typename interior_mutable_type<mapbox::geometry::polygon<CoordinateType> >::type;
+    using interior_const_type = typename interior_const_type<mapbox::geometry::polygon<CoordinateType>>::type;
+    using interior_mutable_type = typename interior_mutable_type<mapbox::geometry::polygon<CoordinateType>>::type;
 
     static interior_const_type get(mapbox::geometry::polygon<CoordinateType> const& p)
     {
@@ -261,5 +263,6 @@ struct push_back<mapbox::interior_rings<CoordinateType>>
         interiors.push_back(ring);
     }
 };
-
-}}}
+}
+}
+}

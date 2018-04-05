@@ -31,9 +31,8 @@
 
 #include <boost/geometry/algorithms/detail/overlay/segment_identifier.hpp>
 
-
-namespace boost { namespace geometry
-{
+namespace boost {
+namespace geometry {
 
 template <typename Point>
 struct closest_point_result
@@ -46,21 +45,19 @@ struct closest_point_result
     inline closest_point_result()
         : distance(distance_type()),
           closest_point()
-    {}
+    {
+    }
 };
 
+namespace strategy {
+namespace distance {
 
-namespace strategy { namespace distance
-{
-
-template
-<
+template <
     typename CalculationType = void,
-    typename Strategy = pythagoras<CalculationType>
->
+    typename Strategy = pythagoras<CalculationType>>
 struct calculate_closest_point
 {
-public :
+  public:
     // The three typedefs below are necessary to calculate distances
     // from segments defined in integer coordinates.
 
@@ -69,20 +66,15 @@ public :
     // So promote.
     template <typename Point, typename PointOfSegment>
     struct calculation_type
-        : promote_floating_point
-          <
-              typename strategy::distance::services::return_type
-                  <
-                      Strategy,
-                      Point,
-                      PointOfSegment
-                  >::type
-          >
-    {};
+        : promote_floating_point<
+              typename strategy::distance::services::return_type<
+                  Strategy,
+                  Point,
+                  PointOfSegment>::type>
+    {
+    };
 
-
-public :
-
+  public:
     // Helper function
     template <typename Point1, typename Point2>
     inline typename calculation_type<Point1, Point2>::type
@@ -94,20 +86,19 @@ public :
 
     template <typename Point, typename PointOfSegment, typename Result>
     inline void apply(Point const& p,
-                    PointOfSegment const& p1, PointOfSegment const& p2,
-                    Result& result) const
+                      PointOfSegment const& p1, PointOfSegment const& p2,
+                      Result& result) const
     {
         assert_dimension_equal<Point, PointOfSegment>();
 
         using calc_type = typename calculation_type<Point, PointOfSegment>::type;
         //// A projected point of points in Integer coordinates must be able to be
         //// represented in FP.
-        typedef model::point
-            <
-                calc_type,
-                dimension<PointOfSegment>::value,
-                typename coordinate_system<PointOfSegment>::type
-            > fp_point_type;
+        typedef model::point<
+            calc_type,
+            dimension<PointOfSegment>::value,
+            typename coordinate_system<PointOfSegment>::type>
+            fp_point_type;
 
         // For convenience
         typedef fp_point_type fp_vector_type;
@@ -129,7 +120,7 @@ public :
             result.closest_point.x = static_cast<calc_type>(p1.x);
             result.closest_point.y = static_cast<calc_type>(p1.y);
         }
-        else if(c1 > c2)
+        else if (c1 > c2)
         {
             result.distance = apply_point_point(p, p2);
             result.closest_point.x = static_cast<calc_type>(p2.x);
@@ -150,11 +141,9 @@ public :
         }
     }
 };
-
-}} // namespace strategy::distance
-
-
-}} // namespace boost::geometry
-
+}
+} // namespace strategy::distance
+}
+} // namespace boost::geometry
 
 #endif // BOOST_GEOMETRY_STRATEGY_CARTESIAN_CLOSEST_POINT_HPP

@@ -2,7 +2,9 @@
 
 #include <mapbox/geometry/geometry.hpp>
 
-namespace mapbox { namespace geometry { namespace algorithms {
+namespace mapbox {
+namespace geometry {
+namespace algorithms {
 
 template <typename coordinate_type_1, typename coordinate_type_2, typename calculation_type = double>
 mapbox::geometry::point<coordinate_type_2> scale(mapbox::geometry::point<coordinate_type_1> const& pt, calculation_type val);
@@ -24,5 +26,6 @@ mapbox::geometry::multi_polygon<coordinate_type_2> scale(mapbox::geometry::multi
 
 template <typename coordinate_type_1, typename coordinate_type_2, typename calculation_type = double>
 mapbox::geometry::geometry<coordinate_type_2> scale(mapbox::geometry::geometry<coordinate_type_1> const& geom, calculation_type val);
-
-}}}
+}
+}
+}

@@ -2,13 +2,12 @@
 #include <iostream>
 #include <mapbox/geometry/algorithms/predicates/intersects_impl.hpp>
 
-int main ()
+int main()
 {
     MAPBOX_ALGORITHM_INSTANTIATE(INTERSECTS,
                                  point<double>,
                                  line_string<double>,
                                  polygon<double>);
-
 
     MAPBOX_ALGORITHM_INSTANTIATE(DISJOINT,
                                  point<double>,
