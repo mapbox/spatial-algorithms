@@ -24,12 +24,12 @@ endif()
 include(cmake/spatialalgorithms.cmake)
 include(cmake/mason.cmake)
 
-mason_use(boost VERSION 1.65.1 HEADER_ONLY)
+mason_use(boost VERSION 1.66.0 HEADER_ONLY)
 mason_use(geometry VERSION 96d3505 HEADER_ONLY)
-mason_use(variant VERSION 1.1.4 HEADER_ONLY)
-mason_use(wagyu VERSION 0.4.1 HEADER_ONLY)
-mason_use(catch VERSION 1.9.6 HEADER_ONLY)
-mason_use(benchmark VERSION 1.2.0)
+mason_use(variant VERSION 1.1.5 HEADER_ONLY)
+mason_use(wagyu VERSION 0.4.3 HEADER_ONLY)
+mason_use(catch VERSION 2.4.0 HEADER_ONLY)
+mason_use(benchmark VERSION 1.4.1)
 
 include_directories("${PROJECT_SOURCE_DIR}/include")
 
