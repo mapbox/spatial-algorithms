@@ -1,7 +1,7 @@
 #include <catch.hpp>
+#include <cmath>
 #include <mapbox/geometry.hpp>
 #include <mapbox/geometry/algorithms/closest_point.hpp>
-#include <cmath>
 
 TEST_CASE("closest_point - double")
 {

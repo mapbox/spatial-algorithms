@@ -44,7 +44,7 @@ void test_intersects()
         CHECK(op::intersects(g2, g1));
     }
 
-    // TODO: add missing permutations !!!!!
+    // TODO(danespringmeyer): add missing permutations !!!!!
 
     SECTION("LineString/Polygon")
     {

@@ -1,7 +1,7 @@
+#include "../util/check_equal.hpp"
 #include <catch.hpp>
 #include <mapbox/geometry.hpp>
 #include <mapbox/geometry/algorithms/scaling.hpp>
-#include "../util/check_equal.hpp"
 
 using namespace mapbox::geometry;
 namespace op = algorithms;

@@ -1,5 +1,5 @@
-#include <catch.hpp>
 #include "../util/check_equal.hpp"
+#include <catch.hpp>
 
 #include <mapbox/geometry.hpp>
 #include <mapbox/geometry/algorithms/intersection.hpp>
@@ -20,7 +20,7 @@ void test_intersection()
 
         p1.x += 1;
         result = op::intersection(p1, p2);
-        CHECK(result.size() == 0);
+        CHECK(result.empty());
     }
 
     SECTION("LineString/LineString")
