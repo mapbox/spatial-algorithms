@@ -1,12 +1,12 @@
-#include <mapbox/geometry/geometry.hpp>
-#include <mapbox/geometry/box.hpp>
-#include <mapbox/geometry/algorithms/predicates.hpp>
 #include <iostream>
+#include <mapbox/geometry/algorithms/predicates.hpp>
+#include <mapbox/geometry/box.hpp>
+#include <mapbox/geometry/geometry.hpp>
 
-#include <fstream>
-#include <mapbox/geometry/algorithms/intersection.hpp>
 #include <boost/geometry.hpp>
+#include <fstream>
 #include <mapbox/geometry/algorithms/detail/boost_adapters.hpp>
+#include <mapbox/geometry/algorithms/intersection.hpp>
 
 int main ()
 {

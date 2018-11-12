@@ -1,7 +1,7 @@
 #include <benchmark/benchmark.h>
+#include <cstdlib>
 #include <mapbox/geometry.hpp>
 #include <mapbox/geometry/algorithms/scaling.hpp>
-#include <cstdlib>
 
 using namespace mapbox::geometry;
 namespace op = algorithms;
