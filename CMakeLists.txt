@@ -25,7 +25,7 @@ include(cmake/spatialalgorithms.cmake)
 include(cmake/mason.cmake)
 
 mason_use(boost VERSION 1.66.0 HEADER_ONLY)
-mason_use(geometry VERSION 96d3505 HEADER_ONLY)
+mason_use(geometry VERSION 1.0.0 HEADER_ONLY)
 mason_use(variant VERSION 1.1.5 HEADER_ONLY)
 mason_use(wagyu VERSION 0.4.3 HEADER_ONLY)
 mason_use(catch VERSION 2.4.0 HEADER_ONLY)

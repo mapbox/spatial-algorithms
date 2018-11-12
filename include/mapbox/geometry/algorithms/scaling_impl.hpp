@@ -74,6 +74,11 @@ struct scaling_visitor
     scaling_visitor(calculation_type val)
         : scale(val) {}
 
+    result_type operator()(mapbox::geometry::empty) const
+    {
+        return result_type();
+    }
+
     result_type operator()(mapbox::geometry::point<coordinate_type_1> const& pt) const
     {
         mapbox::geometry::point<coordinate_type_2> out;
