@@ -7,4 +7,6 @@ namespace mapbox { namespace geometry { namespace algorithms {
 template auto intersection(line_string<std::int64_t> const& p1, line_string<std::int64_t> const& p2)
     ->std::vector<line_string<std::int64_t>>;
 
-}}}
+} // namespace algorithms
+} // namespace geometry
+} // namespace mapbox

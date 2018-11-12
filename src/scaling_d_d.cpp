@@ -12,4 +12,6 @@ template polygon<double> scale(polygon<double> const&, double);
 template multi_polygon<double> scale(multi_polygon<double> const&, double);
 template geometry<double> scale(geometry<double> const&, double);
 
-}}}
+}  // namespace algorithms
+}  // namespace geometry
+}  // namespace mapbox

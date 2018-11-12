@@ -14,4 +14,6 @@ template closest_point_info closest_point(multi_line_string<std::int64_t>const&,
 template closest_point_info closest_point(multi_polygon<std::int64_t>const&, point<std::int64_t> const&);
 template closest_point_info closest_point(geometry_collection<std::int64_t> const&, point<std::int64_t> const&);
 
-}}}
+}  // namespace algorithms
+}  // namespace geometry
+}  // namespace mapbox
