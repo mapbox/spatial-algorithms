@@ -1,8 +1,8 @@
 ## Spatial algorithms library for geometry.hpp
 
-[![Build Status](https://travis-ci.org/mapbox/spatial-algorithms.svg?branch=master)](https://travis-ci.org/mapbox/spatial-algorithms)
+[![Build Status](https://travis-ci.com/mapbox/spatial-algorithms.svg?branch=master)](https://travis-ci.com/mapbox/spatial-algorithms)
 [![codecov](https://codecov.io/gh/mapbox/spatial-algorithms/branch/master/graph/badge.svg)](https://codecov.io/gh/mapbox/spatial-algorithms)
-[![hpp-skel](https://mapbox.s3.amazonaws.com/cpp-assets/hpp-skel-badge_blue.svg)](https://github.com/mapbox/hpp-skel)
+[![hpp-skel](https://raw.githubusercontent.com/mapbox/cpp/master/assets/hpp-skel-badge_blue.svg)](https://github.com/mapbox/hpp-skel)
 
 ### Building
 
